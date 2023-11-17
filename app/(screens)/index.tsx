@@ -1,15 +1,21 @@
-import { Link } from "expo-router";
 import React from "react";
-import { Text, Pressable, View } from "react-native";
+import { Text, View } from "react-native";
+import { ArrowRightIcon } from "lucide-react-native";
+
+import * as Button from "../../components/Button";
 
 export default function ListActivities() {
   return (
-    <View className="flex-1 items-center justify-center bg-white">
-      <Link href="/prepare" asChild>
-        <Pressable className="border border-zinc-400 border-spacing-2 rounded-lg px-6 py-4">
-          <Text className="font-semibold text-lg">List Activities</Text>
-        </Pressable>
-      </Link>
+    <View className="flex-1 items-center justify-center bg-white p-4 pb-6">
+      <View className="flex-1">
+        <Text>Content</Text>
+      </View>
+      <View className="flex-2">
+        <Button.Root href="/prepare">
+          <Button.Title text="Prepare" />
+          <ArrowRightIcon color="white" className="w-4 h-4" />
+        </Button.Root>
+      </View>
     </View>
   );
 }
