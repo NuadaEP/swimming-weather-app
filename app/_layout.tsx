@@ -32,7 +32,15 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
-    <Stack initialRouteName="(screens)/index">
+    <Stack
+      initialRouteName="(screens)/index"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#F7F5F2",
+        },
+        headerTintColor: "#5C5C5C",
+      }}
+    >
       <Stack.Screen name="(screens)/index" options={{ title: "History" }} />
       <Stack.Screen
         name="(screens)/prepare"
