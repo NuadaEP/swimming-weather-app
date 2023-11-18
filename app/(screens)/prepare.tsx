@@ -8,11 +8,11 @@ import {
   TimerReset,
 } from "lucide-react-native";
 import LottieView from "lottie-react-native";
+import { Link } from "expo-router";
 
 import SwimmingPool from "../../assets/animations/swimming-pool.json";
-
 import * as Button from "../../components/Button";
-import { Link } from "expo-router";
+import * as Option from "../../components/Option";
 import BaseTheme from "../../components/BaseTheme";
 
 export default function Prepare() {
@@ -24,8 +24,8 @@ export default function Prepare() {
         </View>
         <View className="flex-1 gap-14">
           <Link href="/(options)/pool-size" asChild>
-            <Pressable className="flex-row justify-between">
-              <View className="flex-row items-center gap-4">
+            <Option.RootOption>
+              <Option.Label>
                 <Ruler
                   opacity={0.9}
                   color="rgb(63 63 70)"
@@ -35,8 +35,8 @@ export default function Prepare() {
                 <Text className="font-semibold text-zinc-700 text-sm">
                   Pool Size
                 </Text>
-              </View>
-              <View className="flex-row items-center gap-1">
+              </Option.Label>
+              <Option.Value>
                 <Text className="font-light text-zinc-600 text-sm">25m</Text>
                 <ChevronRight
                   opacity={0.9}
@@ -44,13 +44,13 @@ export default function Prepare() {
                   strokeWidth={1}
                   size={32}
                 />
-              </View>
-            </Pressable>
+              </Option.Value>
+            </Option.RootOption>
           </Link>
 
           <Link href="/(options)/time-to-work" asChild>
-            <Pressable className="flex-row justify-between">
-              <View className="flex-row items-center gap-4">
+            <Option.Root>
+              <Option.Label>
                 <Dumbbell
                   opacity={0.9}
                   color="rgb(63 63 70)"
@@ -60,8 +60,8 @@ export default function Prepare() {
                 <Text className="font-semibold text-zinc-700 text-sm">
                   Time to work
                 </Text>
-              </View>
-              <View className="flex-row items-center gap-1">
+              </Option.Label>
+              <Option.Value>
                 <Text className="font-light text-zinc-600 text-sm">
                   50 seconds
                 </Text>
@@ -71,13 +71,13 @@ export default function Prepare() {
                   strokeWidth={1}
                   size={32}
                 />
-              </View>
-            </Pressable>
+              </Option.Value>
+            </Option.Root>
           </Link>
 
           <Link href="/(options)/time-to-rest" asChild>
-            <Pressable className="flex-row justify-between">
-              <View className="flex-row items-center gap-4">
+            <Option.Root>
+              <Option.Label>
                 <TimerReset
                   opacity={0.9}
                   color="rgb(63 63 70)"
@@ -87,8 +87,8 @@ export default function Prepare() {
                 <Text className="font-semibold text-zinc-700 text-sm">
                   Time to rest
                 </Text>
-              </View>
-              <View className="flex-row items-center gap-1">
+              </Option.Label>
+              <Option.Value>
                 <Text className="font-light text-zinc-600 text-sm">
                   30 seconds
                 </Text>
@@ -98,8 +98,8 @@ export default function Prepare() {
                   strokeWidth={1}
                   size={32}
                 />
-              </View>
-            </Pressable>
+              </Option.Value>
+            </Option.Root>
           </Link>
         </View>
       </View>
