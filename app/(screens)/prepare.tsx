@@ -1,15 +1,99 @@
-import { Link } from "expo-router";
 import React from "react";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
+import * as Button from "../../components/Button";
+import {
+  ArrowRightIcon,
+  Ruler,
+  ChevronRight,
+  Dumbbell,
+  TimerReset,
+} from "lucide-react-native";
 
 export default function Prepare() {
   return (
-    <View className="flex-1 items-center justify-center bg-white">
-      <Link href="/count-down" asChild>
-        <Pressable className="border border-zinc-400 border-spacing-2 rounded-lg px-6 py-4">
-          <Text className="font-semibold text-lg">COUNT DOWN</Text>
-        </Pressable>
-      </Link>
+    <View className="flex-1 items-center justify-center bg-app-isabeline p-4 pb-8">
+      <View className="flex-1 min-w-full">
+        <View className="flex-2 min-w-full h-96 bg-zinc-300 mb-9" />
+        <View className="flex-1 gap-14">
+          <View className="flex-row justify-between">
+            <View className="flex-row items-center gap-4">
+              <Ruler
+                opacity={0.9}
+                color="rgb(63 63 70)"
+                strokeWidth={1}
+                size={32}
+              />
+              <Text className="font-semibold text-zinc-700 text-sm">
+                Pool Size
+              </Text>
+            </View>
+            <View className="flex-row items-center gap-1">
+              <Text className="font-light text-zinc-600 text-sm">25m</Text>
+              <ChevronRight
+                opacity={0.9}
+                color="rgb(63 63 70)"
+                strokeWidth={1}
+                size={32}
+              />
+            </View>
+          </View>
+          <View className="flex-row justify-between">
+            <View className="flex-row items-center gap-4">
+              <Dumbbell
+                opacity={0.9}
+                color="rgb(63 63 70)"
+                strokeWidth={1}
+                size={32}
+              />
+              <Text className="font-semibold text-zinc-700 text-sm">
+                Time to work
+              </Text>
+            </View>
+            <View className="flex-row items-center gap-1">
+              <Text className="font-light text-zinc-600 text-sm">
+                50 seconds
+              </Text>
+              <ChevronRight
+                opacity={0.9}
+                color="rgb(63 63 70)"
+                strokeWidth={1}
+                size={32}
+              />
+            </View>
+          </View>
+          <View className="flex-row justify-between">
+            <View className="flex-row items-center gap-4">
+              <TimerReset
+                opacity={0.9}
+                color="rgb(63 63 70)"
+                strokeWidth={1}
+                size={32}
+              />
+              <Text className="font-semibold text-zinc-700 text-sm">
+                Time to rest
+              </Text>
+            </View>
+            <View className="flex-row items-center gap-1">
+              <Text className="font-light text-zinc-600 text-sm">
+                30 seconds
+              </Text>
+              <ChevronRight
+                opacity={0.9}
+                color="rgb(63 63 70)"
+                strokeWidth={1}
+                size={32}
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+
+      <View className="flex-2 pt-2">
+        <Button.Root href="/countdonw">
+          <Button.Title text="Start" />
+          <ArrowRightIcon color="white" className="w-4 h-4" />
+        </Button.Root>
+      </View>
     </View>
   );
 }
