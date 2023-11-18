@@ -1,6 +1,5 @@
 import React from "react";
 import { Text, View } from "react-native";
-import * as Button from "../../components/Button";
 import {
   ArrowRightIcon,
   Ruler,
@@ -8,12 +7,19 @@ import {
   Dumbbell,
   TimerReset,
 } from "lucide-react-native";
+import LottieView from "lottie-react-native";
+
+import SwimmingPool from "../../assets/animations/swimming-pool.json";
+
+import * as Button from "../../components/Button";
 
 export default function Prepare() {
   return (
     <View className="flex-1 items-center justify-center bg-app-isabeline p-4 pb-8">
       <View className="flex-1 min-w-full">
-        <View className="flex-2 min-w-full h-96 bg-zinc-300 mb-9" />
+        <View className="flex-2 min-w-full h-96 mb-6">
+          <LottieView source={SwimmingPool} autoPlay />
+        </View>
         <View className="flex-1 gap-14">
           <View className="flex-row justify-between">
             <View className="flex-row items-center gap-4">
