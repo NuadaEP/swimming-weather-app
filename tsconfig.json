@@ -4,5 +4,11 @@
     "jsx": "react",
     "strict": true
   },
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"],
+  "baseUrl": ".",
+  "paths": {
+    "@/*": ["components/*"],
+    "#/*": ["assets/*"],
+    "$/*": ["constants/*"]
+  }
 }
