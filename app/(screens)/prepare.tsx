@@ -13,10 +13,11 @@ import SwimmingPool from "../../assets/animations/swimming-pool.json";
 
 import * as Button from "../../components/Button";
 import { Link } from "expo-router";
+import BaseTheme from "../../components/BaseTheme";
 
 export default function Prepare() {
   return (
-    <View className="flex-1 items-center justify-center bg-app-isabeline p-4 pb-8">
+    <BaseTheme>
       <View className="flex-1 min-w-full">
         <View className="flex-2 min-w-full h-96 mb-6">
           <LottieView source={SwimmingPool} autoPlay />
@@ -109,6 +110,6 @@ export default function Prepare() {
           <ArrowRightIcon color="white" className="w-4 h-4" />
         </Button.Root>
       </View>
-    </View>
+    </BaseTheme>
   );
 }

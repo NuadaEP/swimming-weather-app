@@ -3,6 +3,7 @@ import { FlatList, Text, View } from "react-native";
 import { ArrowRightIcon } from "lucide-react-native";
 
 import * as Button from "../../components/Button";
+import BaseTheme from "../../components/BaseTheme";
 
 const data = [
   {
@@ -86,30 +87,28 @@ const data = [
 
 export default function ListActivities() {
   return (
-    <View className="flex-1 items-center justify-center bg-app-isabeline p-4 pb-8">
+    <BaseTheme>
       <View className="flex-1 min-w-full">
         <FlatList
           data={data}
-          ItemSeparatorComponent={() => (
-            <View className="border-b-2 border-zinc-200" />
-          )}
+          ItemSeparatorComponent={() => <View className="mt-4" />}
           ListEmptyComponent={() => <Text>No register to show here</Text>}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View className="flex-row justify-between items-center my-4">
               <View className="items-start">
-                <Text className="font-semibold text-lg text-zinc-800">
+                <Text className="font-semibold text-sm text-zinc-800">
                   {item.swam}
                 </Text>
-                <Text className="text-sm font-light text-zinc-500">
+                <Text className="text-xs font-light text-zinc-500">
                   {item.time}
                 </Text>
               </View>
               <View className="items-end">
-                <Text className="font-semibold text-lg text-zinc-800">
+                <Text className="font-semibold text-sm text-zinc-800">
                   {item.pace}
                 </Text>
-                <Text className="text-sm font-light text-zinc-500">
+                <Text className="text-xs font-light text-zinc-500">
                   {item.date}
                 </Text>
               </View>
@@ -124,6 +123,6 @@ export default function ListActivities() {
           <ArrowRightIcon color="white" className="w-4 h-4" />
         </Button.Root>
       </View>
-    </View>
+    </BaseTheme>
   );
 }
