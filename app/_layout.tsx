@@ -51,7 +51,7 @@ function RootLayoutNav() {
         />
         <Stack.Screen
           name="(screens)/count-down"
-          options={{ title: "Countdown", headerBackVisible: false }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="(screens)/stopwatch"

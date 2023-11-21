@@ -6,6 +6,7 @@ import * as Button from "../../components/Button";
 import BaseTheme from "../../components/BaseTheme";
 import BodyTheme from "../../components/BodyTheme";
 import FooterTheme from "../../components/FooterTheme";
+import { Link } from "expo-router";
 
 const data = [
   {
@@ -120,10 +121,12 @@ export default function ListActivities() {
       </BodyTheme>
 
       <FooterTheme>
-        <Button.Root href="/prepare">
-          <Button.Title text="Prepare" />
-          <ArrowRightIcon color="white" className="w-4 h-4" />
-        </Button.Root>
+        <Link href="/prepare" asChild>
+          <Button.Root>
+            <Button.Title text="Prepare" />
+            <ArrowRightIcon color="white" className="w-4 h-4" />
+          </Button.Root>
+        </Link>
       </FooterTheme>
     </BaseTheme>
   );

@@ -112,10 +112,12 @@ export default function Prepare() {
       </BodyTheme>
 
       <FooterTheme>
-        <Button.Root href="(screens)/count-down">
-          <Button.Title text="Start" />
-          <ArrowRightIcon color="white" className="w-4 h-4" />
-        </Button.Root>
+        <Link href="/count-down" asChild>
+          <Button.Root>
+            <Button.Title text="Start" />
+            <ArrowRightIcon color="white" className="w-4 h-4" />
+          </Button.Root>
+        </Link>
       </FooterTheme>
     </BaseTheme>
   );
