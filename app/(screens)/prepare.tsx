@@ -14,7 +14,8 @@ import SwimmingPool from "../../assets/animations/swimming-pool.json";
 import * as Button from "../../components/Button";
 import * as Option from "../../components/Option";
 import BaseTheme from "../../components/BaseTheme";
-import { BodyTheme } from "../../components/BodyTheme";
+import BodyTheme from "../../components/BodyTheme";
+import FooterTheme from "../../components/FooterTheme";
 
 export default function Prepare() {
   return (
@@ -105,12 +106,12 @@ export default function Prepare() {
         </View>
       </BodyTheme>
 
-      <View className="flex-2 p-4 pb-10">
+      <FooterTheme>
         <Button.Root href="/countdonw">
           <Button.Title text="Start" />
           <ArrowRightIcon color="white" className="w-4 h-4" />
         </Button.Root>
-      </View>
+      </FooterTheme>
     </BaseTheme>
   );
 }

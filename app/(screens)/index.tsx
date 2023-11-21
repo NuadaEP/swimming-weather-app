@@ -4,6 +4,8 @@ import { ArrowRightIcon } from "lucide-react-native";
 
 import * as Button from "../../components/Button";
 import BaseTheme from "../../components/BaseTheme";
+import BodyTheme from "../../components/BodyTheme";
+import FooterTheme from "../../components/FooterTheme";
 
 const data = [
   {
@@ -88,14 +90,14 @@ const data = [
 export default function ListActivities() {
   return (
     <BaseTheme>
-      <View className="flex-1 min-w-full">
+      <BodyTheme>
         <FlatList
           data={data}
           ItemSeparatorComponent={() => <View className="mt-4" />}
           ListEmptyComponent={() => <Text>No register to show here</Text>}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <View className="flex-row justify-between items-center my-4">
+            <View className="flex-row justify-between items-center my-4 px-4">
               <View className="items-start">
                 <Text className="font-semibold text-sm text-zinc-800">
                   {item.swam}
@@ -115,14 +117,14 @@ export default function ListActivities() {
             </View>
           )}
         />
-      </View>
+      </BodyTheme>
 
-      <View className="flex-2 pt-2">
+      <FooterTheme>
         <Button.Root href="/prepare">
           <Button.Title text="Prepare" />
           <ArrowRightIcon color="white" className="w-4 h-4" />
         </Button.Root>
-      </View>
+      </FooterTheme>
     </BaseTheme>
   );
 }

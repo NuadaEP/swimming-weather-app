@@ -5,7 +5,7 @@ import BaseTheme from "../../components/BaseTheme";
 import * as Option from "../../components/Option";
 import { Check, Ruler } from "lucide-react-native";
 import { View } from "react-native";
-import { BodyTheme } from "../../components/BodyTheme";
+import BodyTheme from "../../components/BodyTheme";
 
 export default function PoolSize() {
   return (
