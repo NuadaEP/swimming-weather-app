@@ -7,7 +7,11 @@ type RootProps = ComponentProps<typeof Pressable>;
 export const Root = forwardRef(
   ({ ...props }: RootProps, ref: React.Ref<View>) => {
     return (
-      <Pressable className="flex-row justify-between" {...props} ref={ref} />
+      <Pressable
+        className="flex-row justify-between rounded-sm py-4 px-5"
+        {...props}
+        ref={ref}
+      />
     );
   }
 );

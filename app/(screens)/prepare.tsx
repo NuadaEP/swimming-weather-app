@@ -14,12 +14,13 @@ import SwimmingPool from "../../assets/animations/swimming-pool.json";
 import * as Button from "../../components/Button";
 import * as Option from "../../components/Option";
 import BaseTheme from "../../components/BaseTheme";
+import { BodyTheme } from "../../components/BodyTheme";
 
 export default function Prepare() {
   return (
     <BaseTheme>
-      <View className="flex-1 min-w-full">
-        <View className="flex-2 min-w-full h-96 mb-6">
+      <BodyTheme>
+        <View className="flex-2 min-w-full h-96 my-6">
           <LottieView source={SwimmingPool} autoPlay />
         </View>
         <View className="flex-1 justify-around mb-10">
@@ -102,9 +103,9 @@ export default function Prepare() {
             </Option.Root>
           </Link>
         </View>
-      </View>
+      </BodyTheme>
 
-      <View className="flex-2 pt-2">
+      <View className="flex-2 p-4 pb-10">
         <Button.Root href="/countdonw">
           <Button.Title text="Start" />
           <ArrowRightIcon color="white" className="w-4 h-4" />
