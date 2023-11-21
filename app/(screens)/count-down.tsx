@@ -1,18 +1,18 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Text, View } from "react-native";
+import { router } from "expo-router";
+import { Plus } from "lucide-react-native";
 
 import BaseTheme from "../../components/BaseTheme";
 import BodyTheme from "../../components/BodyTheme";
 import FooterTheme from "../../components/FooterTheme";
 
 import * as Button from "../../components/Button";
-import { Plus } from "lucide-react-native";
-import { router } from "expo-router";
 
 let refInterval: NodeJS.Timeout | null = null;
 
 export default function CountDown() {
-  const [countdown, setCountdown] = useState(2);
+  const [countdown, setCountdown] = useState(10);
   useEffect(() => {
     if (countdown === 0) {
       setTimeout(() => {
@@ -49,8 +49,8 @@ export default function CountDown() {
 
   return (
     <BaseTheme>
-      <BodyTheme>
-        <View className="flex-1 justify-center items-center">
+      <BodyTheme className="justify-center items-center">
+        <View className="justify-center items-center">
           <Text className="text-8xl font-bold antialiased text-zinc-800">
             {countdown}
           </Text>
