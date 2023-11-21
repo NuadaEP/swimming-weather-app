@@ -112,7 +112,7 @@ export default function Prepare() {
       </BodyTheme>
 
       <FooterTheme>
-        <Button.Root href="/countdonw">
+        <Button.Root href="(screens)/count-down">
           <Button.Title text="Start" />
           <ArrowRightIcon color="white" className="w-4 h-4" />
         </Button.Root>
