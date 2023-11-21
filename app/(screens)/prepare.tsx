@@ -16,8 +16,11 @@ import * as Option from "../../components/Option";
 import BaseTheme from "../../components/BaseTheme";
 import BodyTheme from "../../components/BodyTheme";
 import FooterTheme from "../../components/FooterTheme";
+import { useSettings } from "../../contexts/Settings";
 
 export default function Prepare() {
+  const { poolSize, timeToRest, timeToWork } = useSettings();
+
   return (
     <BaseTheme>
       <BodyTheme>
@@ -39,7 +42,9 @@ export default function Prepare() {
                 </Text>
               </Option.Label>
               <Option.Value>
-                <Text className="font-light text-zinc-600 text-sm">25m</Text>
+                <Text className="font-light text-zinc-600 text-sm">
+                  {poolSize}
+                </Text>
                 <ChevronRight
                   opacity={0.9}
                   color="rgb(63 63 70)"
@@ -65,7 +70,7 @@ export default function Prepare() {
               </Option.Label>
               <Option.Value>
                 <Text className="font-light text-zinc-600 text-sm">
-                  50 seconds
+                  {timeToWork}
                 </Text>
                 <ChevronRight
                   opacity={0.9}
@@ -92,7 +97,7 @@ export default function Prepare() {
               </Option.Label>
               <Option.Value>
                 <Text className="font-light text-zinc-600 text-sm">
-                  30 seconds
+                  {timeToRest}
                 </Text>
                 <ChevronRight
                   opacity={0.9}

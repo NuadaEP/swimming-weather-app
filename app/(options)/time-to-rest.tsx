@@ -6,6 +6,8 @@ import * as Option from "../../components/Option";
 import { Check, TimerReset } from "lucide-react-native";
 import { View } from "react-native";
 import BodyTheme from "../../components/BodyTheme";
+import { useSettings } from "../../contexts/Settings";
+import { useNavigation } from "expo-router";
 
 const timeToRestSettings = [
   "5 seconds",
@@ -31,6 +33,9 @@ const timeToRestSettings = [
 ];
 
 export default function TimeToRest() {
+  const { timeToRest, onSelect } = useSettings();
+  const { goBack } = useNavigation();
+
   return (
     <BaseTheme>
       <BodyTheme>
@@ -42,31 +47,41 @@ export default function TimeToRest() {
         <FlatList
           data={timeToRestSettings}
           keyExtractor={(item) => item}
-          renderItem={({ item }) => (
-            <Option.Root className={item === "30 seconds" ? "bg-zinc-200" : ""}>
-              <Option.Label>
-                <TimerReset
-                  opacity={0.9}
-                  color="rgb(63 63 70)"
-                  strokeWidth={1}
-                  size={32}
-                />
-                <Text className="font-semibold text-zinc-700 text-sm">
-                  {item}
-                </Text>
-              </Option.Label>
-              {item === "30 seconds" && (
-                <Option.Value>
-                  <Check
+          renderItem={({ item }) => {
+            const isSelected = item === timeToRest;
+
+            return (
+              <Option.Root
+                onPress={() => {
+                  onSelect("timeToRest", item);
+                  goBack();
+                }}
+                className={isSelected ? "bg-zinc-200" : ""}
+              >
+                <Option.Label>
+                  <TimerReset
                     opacity={0.9}
                     color="rgb(63 63 70)"
                     strokeWidth={1}
                     size={32}
                   />
-                </Option.Value>
-              )}
-            </Option.Root>
-          )}
+                  <Text className="font-semibold text-zinc-700 text-sm">
+                    {item}
+                  </Text>
+                </Option.Label>
+                {isSelected && (
+                  <Option.Value>
+                    <Check
+                      opacity={0.9}
+                      color="rgb(63 63 70)"
+                      strokeWidth={1}
+                      size={32}
+                    />
+                  </Option.Value>
+                )}
+              </Option.Root>
+            );
+          }}
         />
       </BodyTheme>
     </BaseTheme>

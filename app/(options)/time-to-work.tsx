@@ -6,6 +6,8 @@ import * as Option from "../../components/Option";
 import { Check, Dumbbell } from "lucide-react-native";
 import { View } from "react-native";
 import BodyTheme from "../../components/BodyTheme";
+import { useSettings } from "../../contexts/Settings";
+import { useNavigation } from "expo-router";
 
 const timeToWorkMapper = [
   "5 seconds",
@@ -31,6 +33,9 @@ const timeToWorkMapper = [
 ];
 
 export default function TimeToWork() {
+  const { timeToWork, onSelect } = useSettings();
+  const { goBack } = useNavigation();
+
   return (
     <BaseTheme>
       <BodyTheme>
@@ -42,31 +47,41 @@ export default function TimeToWork() {
         <FlatList
           data={timeToWorkMapper}
           keyExtractor={(item) => item}
-          renderItem={({ item }) => (
-            <Option.Root className={item === "50 seconds" ? "bg-zinc-200" : ""}>
-              <Option.Label>
-                <Dumbbell
-                  opacity={0.9}
-                  color="rgb(63 63 70)"
-                  strokeWidth={1}
-                  size={32}
-                />
-                <Text className="font-semibold text-zinc-700 text-sm">
-                  {item}
-                </Text>
-              </Option.Label>
-              {item === "50 seconds" && (
-                <Option.Value>
-                  <Check
+          renderItem={({ item }) => {
+            const isSelected = item === timeToWork;
+
+            return (
+              <Option.Root
+                onPress={() => {
+                  onSelect("timeToWork", item);
+                  goBack();
+                }}
+                className={isSelected ? "bg-zinc-200" : ""}
+              >
+                <Option.Label>
+                  <Dumbbell
                     opacity={0.9}
                     color="rgb(63 63 70)"
                     strokeWidth={1}
                     size={32}
                   />
-                </Option.Value>
-              )}
-            </Option.Root>
-          )}
+                  <Text className="font-semibold text-zinc-700 text-sm">
+                    {item}
+                  </Text>
+                </Option.Label>
+                {isSelected && (
+                  <Option.Value>
+                    <Check
+                      opacity={0.9}
+                      color="rgb(63 63 70)"
+                      strokeWidth={1}
+                      size={32}
+                    />
+                  </Option.Value>
+                )}
+              </Option.Root>
+            );
+          }}
         />
       </BodyTheme>
     </BaseTheme>
