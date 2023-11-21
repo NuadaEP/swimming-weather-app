@@ -1,5 +1,5 @@
-import { RootOption } from "./RootOption";
+import { Root } from "./Root";
 import { Label } from "./Label";
 import { Value } from "./Value";
 
-export { RootOption, Label, Value };
+export { Root, Label, Value };

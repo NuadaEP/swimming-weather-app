@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import {
   ArrowRightIcon,
   Ruler,
@@ -22,9 +22,9 @@ export default function Prepare() {
         <View className="flex-2 min-w-full h-96 mb-6">
           <LottieView source={SwimmingPool} autoPlay />
         </View>
-        <View className="flex-1 gap-14">
+        <View className="flex-1 justify-around mb-10">
           <Link href="/(options)/pool-size" asChild>
-            <Option.RootOption>
+            <Option.Root>
               <Option.Label>
                 <Ruler
                   opacity={0.9}
@@ -45,7 +45,7 @@ export default function Prepare() {
                   size={32}
                 />
               </Option.Value>
-            </Option.RootOption>
+            </Option.Root>
           </Link>
 
           <Link href="/(options)/time-to-work" asChild>
