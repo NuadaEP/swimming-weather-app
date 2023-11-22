@@ -5,8 +5,10 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-
 import { FlatList, Pressable, Text, View } from "react-native";
+import { Link, Stack } from "expo-router";
+
+import { Pause, Play, Settings, CheckCheck } from "lucide-react-native";
 import AnimatedLottieView from "lottie-react-native";
 import StopwatchTimer, {
   StopwatchTimerMethods,
@@ -23,8 +25,6 @@ import * as Button from "../../components/Button";
 
 import { millisecondsToSeconds } from "../../helpers/milliseconds-to-seconds";
 import { useSettings } from "../../contexts/Settings";
-import { Link, Stack } from "expo-router";
-import { Pause, Play, Settings } from "lucide-react-native";
 
 type StopwatchMapper = {
   activity: "Rest Time!" | "Work Time!";
@@ -35,6 +35,7 @@ export default function Stopwatch() {
   const [stopwatch, setStopwatch] = useState<StopwatchMapper[]>([]);
   const [activity, setActivity] = useState<"work" | "rest">("work");
   const [stopRun, setStopRun] = useState<"resume" | "paused">("resume");
+  const [almostTimeout, setAlmostTimeout] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
 
@@ -56,9 +57,12 @@ export default function Stopwatch() {
     ]);
 
     setActivity("work");
+    setAlmostTimeout(false);
+
+    if (isPaused) setStopRun("resume");
 
     reset();
-  }, [activity, stopwatch]);
+  }, [activity, stopwatch, stopRun, almostTimeout]);
 
   const restTime = useCallback(() => {
     const snapshot = millisecondsToSeconds(
@@ -71,9 +75,12 @@ export default function Stopwatch() {
     ]);
 
     setActivity("rest");
+    setAlmostTimeout(false);
+
+    if (isPaused) setStopRun("resume");
 
     reset();
-  }, [activity, stopwatch]);
+  }, [activity, almostTimeout, stopRun]);
 
   const reset = useCallback(() => {
     stopwatchTimerRef.current?.reset();
@@ -95,10 +102,12 @@ export default function Stopwatch() {
         const workTimeNumber = Number(timeToWork.replace(" seconds", ""));
 
         if (Number(seconds) >= workTimeNumber) restTime();
+        else if (workTimeNumber - Number(seconds) <= 5) setAlmostTimeout(true);
       } else {
         const restTimeNumber = Number(timeToRest.replace(" seconds", ""));
 
         if (Number(seconds) >= restTimeNumber) workTime();
+        else if (restTimeNumber - Number(seconds) <= 5) setAlmostTimeout(true);
       }
     }
   }, [elapsedTime, activity]);
@@ -195,17 +204,17 @@ export default function Stopwatch() {
                 minWidth: "100%",
                 gap: 4,
               }}
+              textCharStyle={{
+                fontWeight: "bold",
+                color: almostTimeout ? "rgb(248 113 113)" : "#27272a",
+              }}
               digitStyle={{
                 minWidth: "9%",
                 maxWidth: "20%",
-                fontSize: 48,
-                fontWeight: "bold",
-                color: "#27272a",
+                fontSize: almostTimeout ? 52 : 48,
               }}
               separatorStyle={{
-                fontSize: 42,
-                fontWeight: "bold",
-                color: "#27272a",
+                fontSize: almostTimeout ? 46 : 42,
               }}
             />
             <Text className="text-sm font-light text-zinc-600">
@@ -242,14 +251,37 @@ export default function Stopwatch() {
         </View>
       </BodyTheme>
       <FooterTheme>
-        <Button.Root
-          onPress={() => {
-            if (isWorkTime) restTime();
-            else workTime();
-          }}
-        >
-          <Button.Title text={isWorkTime ? "Slide to Rest" : "Slide to Swim"} />
-        </Button.Root>
+        {isPaused ? (
+          <Link href="/overview" asChild>
+            <Button.Root
+              onPress={() => {
+                stopwatchTimerRef.current?.pause();
+                stopwatchTimerRef.current?.reset();
+                intervalId && clearInterval(intervalId);
+              }}
+              outlined
+            >
+              <Button.Title text="Finish Activity" />
+              <CheckCheck
+                opacity={0.9}
+                color="rgb(63 63 70)"
+                strokeWidth={2}
+                size={32}
+              />
+            </Button.Root>
+          </Link>
+        ) : (
+          <Button.Root
+            onPress={() => {
+              if (isWorkTime) restTime();
+              else workTime();
+            }}
+          >
+            <Button.Title
+              text={isWorkTime ? "Slide to Rest" : "Slide to Swim"}
+            />
+          </Button.Root>
+        )}
       </FooterTheme>
     </BaseTheme>
   );
