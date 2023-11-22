@@ -6,7 +6,7 @@ import React, {
   useMemo,
 } from "react";
 
-import { Dimensions, FlatList, Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import AnimatedLottieView from "lottie-react-native";
 import StopwatchTimer, {
   StopwatchTimerMethods,
@@ -20,8 +20,9 @@ import BodyTheme from "../../components/BodyTheme";
 import FooterTheme from "../../components/FooterTheme";
 
 import * as Button from "../../components/Button";
-import { useSettings } from "../../contexts/Settings";
+
 import { millisecondsToSeconds } from "../../helpers/milliseconds-to-seconds";
+import { useSettings } from "../../contexts/Settings";
 
 type StopwatchMapper = {
   activity: "Rest Time!" | "Work Time!";
@@ -90,60 +91,69 @@ const timesMapper: StopwatchMapper[] = [
 export default function Stopwatch() {
   const [stopwatch, setStopwatch] = useState<StopwatchMapper[]>([]);
   const [activity, setActivity] = useState<"work" | "rest">("work");
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+
   const stopwatchTimerRef = useRef<StopwatchTimerMethods>(null);
 
-  const { timeToWork, timeToRest } = useSettings();
+  const { timeToWork } = useSettings();
 
-  const workTime = useCallback(() => {
+  const isWorkTime = useMemo(() => activity === "work", [activity]);
+
+  const handleTime = useCallback(() => {
+    setActivity(isWorkTime ? "work" : "rest");
     const snapshot = millisecondsToSeconds(
       stopwatchTimerRef.current?.getSnapshot() as number
     );
+    console.log(activity);
 
     setStopwatch((current) => [
       ...current,
-      { activity: "Work Time!", time: snapshot },
+      { activity: isWorkTime ? "Work Time!" : "Rest Time!", time: snapshot },
     ]);
 
-    setActivity("work");
     stopwatchTimerRef.current?.reset();
+
     play();
-  }, [stopwatchTimerRef, activity]);
-
-  const restTime = useCallback(() => {
-    const snapshot = millisecondsToSeconds(
-      stopwatchTimerRef.current?.getSnapshot() as number
-    );
-
-    setStopwatch((current) => [
-      ...current,
-      { activity: "Rest Time!", time: snapshot },
-    ]);
-
-    setActivity("rest");
-    stopwatchTimerRef.current?.reset();
-    play();
-  }, [stopwatchTimerRef, activity]);
+  }, []);
 
   const play = useCallback(() => {
     setTimeout(() => stopwatchTimerRef.current?.play(), 500);
   }, []);
 
+  // const stopStopwatch = () => {
+  //   if (intervalId) {
+  //     clearInterval(intervalId);
+  //     setIntervalId(null);
+  //   }
+  // };
+
   useEffect(() => {
-    // console.log("test");
+    if (elapsedTime >= 10000) {
+      const [seconds] = millisecondsToSeconds(
+        stopwatchTimerRef.current?.getSnapshot() as number
+      ).split(",");
+
+      if (isWorkTime) {
+        const workTimeNumber = Number(timeToWork.replace(" seconds", ""));
+
+        if (Number(seconds) >= workTimeNumber) {
+          handleTime();
+        }
+      }
+    }
+  }, [elapsedTime]);
+
+  useEffect(() => {
     play();
 
-    // if (activity === "work") {
-    //   const timeToWorkNumber = Number(timeToWork.replace(" seconds", ""));
+    if (!intervalId) {
+      const interval = setInterval(() => {
+        setElapsedTime((prevTime) => prevTime + 1000);
+      }, 1000);
 
-    //   const [seconds] = millisecondsToSeconds(
-    //     stopwatchTimerRef.current?.getSnapshot() as number
-    //   ).split(",");
-
-    //   if (Number(seconds) >= timeToWorkNumber) {
-    //     restTime();
-    //   }
-    // }
-    // const timeToRestNumber = Number(timeToRest.replace(" seconds", ""))
+      setIntervalId(interval);
+    }
   }, [stopwatchTimerRef]);
 
   return (
@@ -175,7 +185,7 @@ export default function Stopwatch() {
               }}
             />
             <Text className="text-sm font-light text-zinc-600">
-              {activity === "work" ? "Swim time!" : "Rest time!"}
+              {isWorkTime ? "Swim time!" : "Rest time!"}
             </Text>
           </View>
           <FlatList
@@ -200,7 +210,7 @@ export default function Stopwatch() {
         </View>
         <View className="w-screen h-96 my-6 bg-app-isabeline">
           <AnimatedLottieView
-            source={activity === "work" ? SwimTime : RestTime}
+            source={isWorkTime ? SwimTime : RestTime}
             autoPlay
             loop
             speed={1}
@@ -208,18 +218,8 @@ export default function Stopwatch() {
         </View>
       </BodyTheme>
       <FooterTheme>
-        <Button.Root
-          onPress={() => {
-            if (activity === "work") {
-              restTime();
-            } else {
-              workTime();
-            }
-          }}
-        >
-          <Button.Title
-            text={activity === "work" ? "Slide to Rest" : "Slide to Swim"}
-          />
+        <Button.Root onPress={handleTime}>
+          <Button.Title text={isWorkTime ? "Slide to Rest" : "Slide to Swim"} />
         </Button.Root>
       </FooterTheme>
     </BaseTheme>
