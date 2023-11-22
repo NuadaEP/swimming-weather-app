@@ -35,7 +35,7 @@ function RootLayoutNav() {
   return (
     <Settings>
       <Stack
-        initialRouteName="(screens)/index"
+        initialRouteName="(screens)/stopwatch"
         screenOptions={{
           headerStyle: {
             backgroundColor: "#F7F5F2",
