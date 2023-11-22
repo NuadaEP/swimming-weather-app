@@ -7,6 +7,7 @@ export default function OptionsLayout() {
   return (
     <Stack
       screenOptions={{
+        title: "",
         headerShown: false,
       }}
     >

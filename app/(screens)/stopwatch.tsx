@@ -6,7 +6,7 @@ import React, {
   useMemo,
 } from "react";
 
-import { FlatList, Text, View } from "react-native";
+import { FlatList, Pressable, Text, View } from "react-native";
 import AnimatedLottieView from "lottie-react-native";
 import StopwatchTimer, {
   StopwatchTimerMethods,
@@ -23,95 +23,59 @@ import * as Button from "../../components/Button";
 
 import { millisecondsToSeconds } from "../../helpers/milliseconds-to-seconds";
 import { useSettings } from "../../contexts/Settings";
+import { Link, Stack } from "expo-router";
+import { Pause, Play, Settings } from "lucide-react-native";
 
 type StopwatchMapper = {
   activity: "Rest Time!" | "Work Time!";
   time: string;
 };
 
-const timesMapper: StopwatchMapper[] = [
-  {
-    activity: "Rest time!",
-    time: "00:00:00",
-  },
-  {
-    activity: "Work Time!",
-    time: "00:00:00",
-  },
-  {
-    activity: "Rest time!",
-    time: "00:00:00",
-  },
-  {
-    activity: "Work Time!",
-    time: "00:00:00",
-  },
-  {
-    activity: "Rest time!",
-    time: "00:00:00",
-  },
-  {
-    activity: "Work Time!",
-    time: "00:00:00",
-  },
-  {
-    activity: "Rest time!",
-    time: "00:00:00",
-  },
-  {
-    activity: "Work Time!",
-    time: "00:00:00",
-  },
-  {
-    activity: "Rest time!",
-    time: "00:00:00",
-  },
-  {
-    activity: "Work Time!",
-    time: "00:00:00",
-  },
-  {
-    activity: "Rest time!",
-    time: "00:00:00",
-  },
-  {
-    activity: "Work Time!",
-    time: "00:00:00",
-  },
-  {
-    activity: "Rest time!",
-    time: "00:00:00",
-  },
-  {
-    activity: "Work Time!",
-    time: "00:00:00",
-  },
-];
-
 export default function Stopwatch() {
   const [stopwatch, setStopwatch] = useState<StopwatchMapper[]>([]);
   const [activity, setActivity] = useState<"work" | "rest">("work");
+  const [stopRun, setStopRun] = useState<"resume" | "paused">("resume");
   const [elapsedTime, setElapsedTime] = useState(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
 
   const stopwatchTimerRef = useRef<StopwatchTimerMethods>(null);
 
-  const { timeToWork } = useSettings();
+  const { timeToWork, timeToRest } = useSettings();
 
   const isWorkTime = useMemo(() => activity === "work", [activity]);
+  const isPaused = useMemo(() => stopRun === "paused", [stopRun]);
 
-  const handleTime = useCallback(() => {
-    setActivity(isWorkTime ? "work" : "rest");
+  const workTime = useCallback(() => {
     const snapshot = millisecondsToSeconds(
       stopwatchTimerRef.current?.getSnapshot() as number
     );
-    console.log(activity);
 
     setStopwatch((current) => [
       ...current,
-      { activity: isWorkTime ? "Work Time!" : "Rest Time!", time: snapshot },
+      { activity: `Work Time!`, time: snapshot },
     ]);
 
+    setActivity("work");
+
+    reset();
+  }, [activity, stopwatch]);
+
+  const restTime = useCallback(() => {
+    const snapshot = millisecondsToSeconds(
+      stopwatchTimerRef.current?.getSnapshot() as number
+    );
+
+    setStopwatch((current) => [
+      ...current,
+      { activity: `Rest Time!`, time: snapshot },
+    ]);
+
+    setActivity("rest");
+
+    reset();
+  }, [activity, stopwatch]);
+
+  const reset = useCallback(() => {
     stopwatchTimerRef.current?.reset();
 
     play();
@@ -121,15 +85,8 @@ export default function Stopwatch() {
     setTimeout(() => stopwatchTimerRef.current?.play(), 500);
   }, []);
 
-  // const stopStopwatch = () => {
-  //   if (intervalId) {
-  //     clearInterval(intervalId);
-  //     setIntervalId(null);
-  //   }
-  // };
-
   useEffect(() => {
-    if (elapsedTime >= 10000) {
+    if (elapsedTime >= 500) {
       const [seconds] = millisecondsToSeconds(
         stopwatchTimerRef.current?.getSnapshot() as number
       ).split(",");
@@ -137,16 +94,16 @@ export default function Stopwatch() {
       if (isWorkTime) {
         const workTimeNumber = Number(timeToWork.replace(" seconds", ""));
 
-        if (Number(seconds) >= workTimeNumber) {
-          handleTime();
-        }
+        if (Number(seconds) >= workTimeNumber) restTime();
+      } else {
+        const restTimeNumber = Number(timeToRest.replace(" seconds", ""));
+
+        if (Number(seconds) >= restTimeNumber) workTime();
       }
     }
-  }, [elapsedTime]);
+  }, [elapsedTime, activity]);
 
-  useEffect(() => {
-    play();
-
+  const startWatch = useCallback(() => {
     if (!intervalId) {
       const interval = setInterval(() => {
         setElapsedTime((prevTime) => prevTime + 1000);
@@ -154,11 +111,78 @@ export default function Stopwatch() {
 
       setIntervalId(interval);
     }
+  }, []);
+
+  useEffect(() => {
+    play();
+
+    startWatch();
   }, [stopwatchTimerRef]);
+
+  const pause = useCallback(() => {
+    stopwatchTimerRef.current?.pause();
+
+    setStopRun("paused");
+
+    if (intervalId) {
+      clearInterval(intervalId);
+      setIntervalId(null);
+    }
+  }, [intervalId]);
+
+  const resume = useCallback(() => {
+    play();
+
+    setStopRun("resume");
+
+    startWatch();
+  }, []);
 
   return (
     <BaseTheme>
       <BodyTheme>
+        <Stack.Screen
+          options={{
+            headerRight: () => (
+              <Pressable
+                onPress={() => {
+                  if (isPaused) resume();
+                  else pause();
+                }}
+                className="py-2 pl-6 pr-1"
+              >
+                {isPaused ? (
+                  <Pause
+                    opacity={0.9}
+                    color="rgb(63 63 70)"
+                    strokeWidth={2}
+                    size={16}
+                  />
+                ) : (
+                  <Play
+                    opacity={0.9}
+                    color="rgb(63 63 70)"
+                    strokeWidth={2}
+                    size={16}
+                  />
+                )}
+              </Pressable>
+            ),
+            headerLeft: () => (
+              <Link href="/(modals)/settings" asChild>
+                <Pressable onPress={pause} className="py-2 pr-6 pl-1">
+                  <Settings
+                    opacity={0.9}
+                    color="rgb(63 63 70)"
+                    strokeWidth={2}
+                    size={18}
+                  />
+                </Pressable>
+              </Link>
+            ),
+          }}
+        />
+
         <View className="min-w-full h-64 items-center py-8 px-6">
           <View className="flex-1 justify-center items-center my-3">
             <StopwatchTimer
@@ -213,12 +237,17 @@ export default function Stopwatch() {
             source={isWorkTime ? SwimTime : RestTime}
             autoPlay
             loop
-            speed={1}
+            speed={isPaused ? 0.3 : 1}
           />
         </View>
       </BodyTheme>
       <FooterTheme>
-        <Button.Root onPress={handleTime}>
+        <Button.Root
+          onPress={() => {
+            if (isWorkTime) restTime();
+            else workTime();
+          }}
+        >
           <Button.Title text={isWorkTime ? "Slide to Rest" : "Slide to Swim"} />
         </Button.Root>
       </FooterTheme>

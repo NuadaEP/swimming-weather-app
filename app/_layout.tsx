@@ -35,7 +35,6 @@ function RootLayoutNav() {
   return (
     <Settings>
       <Stack
-        initialRouteName="(screens)/stopwatch"
         screenOptions={{
           headerStyle: {
             backgroundColor: "#F7F5F2",
@@ -62,7 +61,14 @@ function RootLayoutNav() {
           options={{ title: "Overview" }}
         />
         <Stack.Screen name="[...missing]" options={{ title: "Oops!" }} />
-        <Stack.Screen name="(options)" options={{ title: "" }} />
+        <Stack.Screen
+          name="(options)"
+          options={{ title: "", headerShown: false, presentation: "modal" }}
+        />
+        <Stack.Screen
+          name="(modals)"
+          options={{ title: "", presentation: "modal", headerShown: false }}
+        />
       </Stack>
     </Settings>
   );

@@ -12,16 +12,14 @@ import { Link } from "expo-router";
 
 import SwimmingPool from "../../assets/animations/swimming-pool.json";
 
-import * as Button from "../../components/Button";
 import * as Option from "../../components/Option";
 
 import BaseTheme from "../../components/BaseTheme";
 import BodyTheme from "../../components/BodyTheme";
-import FooterTheme from "../../components/FooterTheme";
 
 import { useSettings } from "../../contexts/Settings";
 
-export default function Prepare() {
+export default function ModalSettings() {
   const { poolSize, timeToRest, timeToWork } = useSettings();
 
   return (
@@ -30,7 +28,7 @@ export default function Prepare() {
         <View className="flex-2 min-w-full h-96 my-6">
           <LottieView source={SwimmingPool} autoPlay />
         </View>
-        <View className="flex-1 justify-around mb-10">
+        <View className="flex-1 gap-6 mb-10">
           <Link href="/(options)/pool-size" asChild>
             <Option.Root>
               <Option.Label>
@@ -113,15 +111,6 @@ export default function Prepare() {
           </Link>
         </View>
       </BodyTheme>
-
-      <FooterTheme>
-        <Link href="/count-down" asChild>
-          <Button.Root>
-            <Button.Title text="Start" />
-            <ArrowRightIcon color="white" className="w-4 h-4" />
-          </Button.Root>
-        </Link>
-      </FooterTheme>
     </BaseTheme>
   );
 }

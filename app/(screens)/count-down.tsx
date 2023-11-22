@@ -12,7 +12,7 @@ import * as Button from "../../components/Button";
 let refInterval: NodeJS.Timeout | null = null;
 
 export default function CountDown() {
-  const [countdown, setCountdown] = useState(10);
+  const [countdown, setCountdown] = useState(2);
   useEffect(() => {
     if (countdown === 0) {
       setTimeout(() => {
