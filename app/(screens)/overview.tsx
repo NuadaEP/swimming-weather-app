@@ -1,7 +1,20 @@
 import React from "react";
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
-import { ArrowRightIcon, Check, Ruler } from "lucide-react-native";
+import {
+  ArrowRightIcon,
+  Check,
+  Clock,
+  Dumbbell,
+  Gauge,
+  HeartPulse,
+  Rabbit,
+  Ruler,
+  Turtle,
+} from "lucide-react-native";
+import AnimatedLottieView from "lottie-react-native";
+
+import SwimFinish from "../../assets/animations/swim-finish.json";
 
 import BaseTheme from "../../components/BaseTheme";
 import BodyTheme from "../../components/BodyTheme";
@@ -10,12 +23,18 @@ import FooterTheme from "../../components/FooterTheme";
 import * as Button from "../../components/Button";
 import * as Option from "../../components/Option";
 
+import { useSettings } from "../../contexts/Settings";
+
 export default function Overview() {
+  const {} = useSettings();
+
   return (
     <BaseTheme>
       <BodyTheme isScrollable>
-        <View className="min-w-full h-52 mb-6 bg-zinc-200" />
-        <View className="flex-row justify-between px-8 mb-4">
+        <View className="min-w-full h-52 mb-6 items-center justify-start">
+          <AnimatedLottieView source={SwimFinish} autoPlay resizeMode="cover" />
+        </View>
+        <View className="flex-row justify-between px-8 pb-4">
           <View className="items-center">
             <Text className="font-semibold text-sm">1400 meters</Text>
             <Text className="font-light text-xs">DISTANCE</Text>
@@ -42,7 +61,7 @@ export default function Overview() {
             </Text>
           </Option.Label>
           <Option.Value>
-            <Text className="font-light text-zinc-600 text-sm">poolSize</Text>
+            <Text className="font-light text-zinc-600 text-sm">25 meters</Text>
             <Check
               opacity={0.9}
               color="rgb(63 63 70)"
@@ -53,18 +72,18 @@ export default function Overview() {
         </Option.Root>
         <Option.Root>
           <Option.Label>
-            <Ruler
+            <Dumbbell
               opacity={0.9}
               color="rgb(63 63 70)"
               strokeWidth={1}
               size={32}
             />
             <Text className="font-semibold text-zinc-700 text-sm">
-              Pool Size
+              Av. Time working
             </Text>
           </Option.Label>
           <Option.Value>
-            <Text className="font-light text-zinc-600 text-sm">poolSize</Text>
+            <Text className="font-light text-zinc-600 text-sm">40 seconds</Text>
             <Check
               opacity={0.9}
               color="rgb(63 63 70)"
@@ -75,18 +94,18 @@ export default function Overview() {
         </Option.Root>
         <Option.Root>
           <Option.Label>
-            <Ruler
+            <Clock
               opacity={0.9}
               color="rgb(63 63 70)"
               strokeWidth={1}
               size={32}
             />
             <Text className="font-semibold text-zinc-700 text-sm">
-              Pool Size
+              Av. Resting time
             </Text>
           </Option.Label>
           <Option.Value>
-            <Text className="font-light text-zinc-600 text-sm">poolSize</Text>
+            <Text className="font-light text-zinc-600 text-sm">20 seconds</Text>
             <Check
               opacity={0.9}
               color="rgb(63 63 70)"
@@ -97,18 +116,18 @@ export default function Overview() {
         </Option.Root>
         <Option.Root>
           <Option.Label>
-            <Ruler
+            <Gauge
               opacity={0.9}
               color="rgb(63 63 70)"
               strokeWidth={1}
               size={32}
             />
             <Text className="font-semibold text-zinc-700 text-sm">
-              Pool Size
+              Best Time
             </Text>
           </Option.Label>
           <Option.Value>
-            <Text className="font-light text-zinc-600 text-sm">poolSize</Text>
+            <Text className="font-light text-zinc-600 text-sm">48 seconds</Text>
             <Check
               opacity={0.9}
               color="rgb(63 63 70)"
@@ -119,18 +138,18 @@ export default function Overview() {
         </Option.Root>
         <Option.Root>
           <Option.Label>
-            <Ruler
+            <Turtle
               opacity={0.9}
               color="rgb(63 63 70)"
               strokeWidth={1}
               size={32}
             />
             <Text className="font-semibold text-zinc-700 text-sm">
-              Pool Size
+              Hardest time
             </Text>
           </Option.Label>
           <Option.Value>
-            <Text className="font-light text-zinc-600 text-sm">poolSize</Text>
+            <Text className="font-light text-zinc-600 text-sm">55 seconds</Text>
             <Check
               opacity={0.9}
               color="rgb(63 63 70)"
@@ -141,18 +160,18 @@ export default function Overview() {
         </Option.Root>
         <Option.Root>
           <Option.Label>
-            <Ruler
+            <HeartPulse
               opacity={0.9}
               color="rgb(63 63 70)"
               strokeWidth={1}
               size={32}
             />
             <Text className="font-semibold text-zinc-700 text-sm">
-              Pool Size
+              Longer break time
             </Text>
           </Option.Label>
           <Option.Value>
-            <Text className="font-light text-zinc-600 text-sm">poolSize</Text>
+            <Text className="font-light text-zinc-600 text-sm">25 seconds</Text>
             <Check
               opacity={0.9}
               color="rgb(63 63 70)"
@@ -163,62 +182,18 @@ export default function Overview() {
         </Option.Root>
         <Option.Root>
           <Option.Label>
-            <Ruler
+            <Rabbit
               opacity={0.9}
               color="rgb(63 63 70)"
               strokeWidth={1}
               size={32}
             />
             <Text className="font-semibold text-zinc-700 text-sm">
-              Pool Size
+              Av. Speed
             </Text>
           </Option.Label>
           <Option.Value>
-            <Text className="font-light text-zinc-600 text-sm">poolSize</Text>
-            <Check
-              opacity={0.9}
-              color="rgb(63 63 70)"
-              strokeWidth={1}
-              size={28}
-            />
-          </Option.Value>
-        </Option.Root>
-        <Option.Root>
-          <Option.Label>
-            <Ruler
-              opacity={0.9}
-              color="rgb(63 63 70)"
-              strokeWidth={1}
-              size={32}
-            />
-            <Text className="font-semibold text-zinc-700 text-sm">
-              Pool Size
-            </Text>
-          </Option.Label>
-          <Option.Value>
-            <Text className="font-light text-zinc-600 text-sm">poolSize</Text>
-            <Check
-              opacity={0.9}
-              color="rgb(63 63 70)"
-              strokeWidth={1}
-              size={28}
-            />
-          </Option.Value>
-        </Option.Root>
-        <Option.Root>
-          <Option.Label>
-            <Ruler
-              opacity={0.9}
-              color="rgb(63 63 70)"
-              strokeWidth={1}
-              size={32}
-            />
-            <Text className="font-semibold text-zinc-700 text-sm">
-              Pool Size
-            </Text>
-          </Option.Label>
-          <Option.Value>
-            <Text className="font-light text-zinc-600 text-sm">poolSize</Text>
+            <Text className="font-light text-zinc-600 text-sm">1km/h</Text>
             <Check
               opacity={0.9}
               color="rgb(63 63 70)"
@@ -229,7 +204,7 @@ export default function Overview() {
         </Option.Root>
       </BodyTheme>
       <FooterTheme>
-        <Link href="/history" asChild>
+        <Link href="/" asChild>
           <Button.Root>
             <Button.Title text="Go back to history" />
             <ArrowRightIcon color="white" className="w-4 h-4" />
