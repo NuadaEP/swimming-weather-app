@@ -42,7 +42,7 @@ function RootLayoutNav() {
           headerTintColor: "#5C5C5C",
         }}
       >
-        <Stack.Screen name="(screens)/index" options={{ title: "History" }} />
+        <Stack.Screen name="(screens)/history" options={{ title: "History" }} />
 
         <Stack.Screen
           name="(screens)/prepare"
