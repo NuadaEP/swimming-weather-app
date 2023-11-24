@@ -1,12 +1,13 @@
 import React from "react";
 import { FlatList, Text, View } from "react-native";
-import { ArrowRightIcon } from "lucide-react-native";
+import { Link } from "expo-router";
 
-import * as Button from "../../components/Button";
 import BaseTheme from "../../components/BaseTheme";
 import BodyTheme from "../../components/BodyTheme";
 import FooterTheme from "../../components/FooterTheme";
-import { Link } from "expo-router";
+
+import * as Button from "../../components/Button";
+import AnimatedArrowIcon from "../../components/AnimatedArrowIcon";
 
 const data = [
   {
@@ -124,7 +125,7 @@ export default function ListActivities() {
         <Link href="/prepare" asChild>
           <Button.Root>
             <Button.Title text="Prepare" />
-            <ArrowRightIcon color="white" className="w-4 h-4" />
+            <AnimatedArrowIcon />
           </Button.Root>
         </Link>
       </FooterTheme>

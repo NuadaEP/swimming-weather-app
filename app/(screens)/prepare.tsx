@@ -9,6 +9,7 @@ import {
 } from "lucide-react-native";
 import LottieView from "lottie-react-native";
 import { Link } from "expo-router";
+import { MotiView } from "moti";
 
 import SwimmingPool from "../../assets/animations/swimming-pool.json";
 
@@ -20,6 +21,16 @@ import BodyTheme from "../../components/BodyTheme";
 import FooterTheme from "../../components/FooterTheme";
 
 import { useSettings } from "../../contexts/Settings";
+import AnimatedArrowIcon from "../../components/AnimatedArrowIcon";
+
+const animationProps = {
+  from: {
+    opacity: 0,
+  },
+  animate: {
+    opacity: 1,
+  },
+};
 
 export default function Prepare() {
   const { poolSize, timeToRest, timeToWork } = useSettings();
@@ -31,86 +42,89 @@ export default function Prepare() {
           <LottieView source={SwimmingPool} autoPlay />
         </View>
         <View className="flex-1 justify-around mb-10">
-          <Link href="/(options)/pool-size" asChild>
-            <Option.Root>
-              <Option.Label>
-                <Ruler
-                  opacity={0.9}
-                  color="rgb(63 63 70)"
-                  strokeWidth={1}
-                  size={32}
-                />
-                <Text className="font-semibold text-zinc-700 text-sm">
-                  Pool Size
-                </Text>
-              </Option.Label>
-              <Option.Value>
-                <Text className="font-light text-zinc-600 text-sm">
-                  {poolSize}
-                </Text>
-                <ChevronRight
-                  opacity={0.9}
-                  color="rgb(63 63 70)"
-                  strokeWidth={1}
-                  size={32}
-                />
-              </Option.Value>
-            </Option.Root>
-          </Link>
+          <MotiView
+            from={animationProps.from}
+            animate={animationProps.animate}
+            transition={{ duration: 500, type: "timing", delay: 500 }}
+          >
+            <Link href="/(options)/pool-size" asChild>
+              <Option.Root>
+                <Option.Label>
+                  <Ruler
+                    opacity={0.9}
+                    color="rgb(63 63 70)"
+                    strokeWidth={1}
+                    size={32}
+                  />
+                  <Text className="font-semibold text-zinc-700 text-sm">
+                    Pool Size
+                  </Text>
+                </Option.Label>
+                <Option.Value>
+                  <Text className="font-light text-zinc-600 text-sm">
+                    {poolSize}
+                  </Text>
+                  <AnimatedArrowIcon variant="dark" />
+                </Option.Value>
+              </Option.Root>
+            </Link>
+          </MotiView>
 
-          <Link href="/(options)/time-to-work" asChild>
-            <Option.Root>
-              <Option.Label>
-                <Dumbbell
-                  opacity={0.9}
-                  color="rgb(63 63 70)"
-                  strokeWidth={1}
-                  size={32}
-                />
-                <Text className="font-semibold text-zinc-700 text-sm">
-                  Time to work
-                </Text>
-              </Option.Label>
-              <Option.Value>
-                <Text className="font-light text-zinc-600 text-sm">
-                  {timeToWork}
-                </Text>
-                <ChevronRight
-                  opacity={0.9}
-                  color="rgb(63 63 70)"
-                  strokeWidth={1}
-                  size={32}
-                />
-              </Option.Value>
-            </Option.Root>
-          </Link>
+          <MotiView
+            from={animationProps.from}
+            animate={animationProps.animate}
+            transition={{ duration: 500, type: "timing", delay: 700 }}
+          >
+            <Link href="/(options)/time-to-work" asChild>
+              <Option.Root>
+                <Option.Label>
+                  <Dumbbell
+                    opacity={0.9}
+                    color="rgb(63 63 70)"
+                    strokeWidth={1}
+                    size={32}
+                  />
+                  <Text className="font-semibold text-zinc-700 text-sm">
+                    Time to work
+                  </Text>
+                </Option.Label>
+                <Option.Value>
+                  <Text className="font-light text-zinc-600 text-sm">
+                    {timeToWork}
+                  </Text>
+                  <AnimatedArrowIcon variant="dark" />
+                </Option.Value>
+              </Option.Root>
+            </Link>
+          </MotiView>
 
-          <Link href="/(options)/time-to-rest" asChild>
-            <Option.Root>
-              <Option.Label>
-                <TimerReset
-                  opacity={0.9}
-                  color="rgb(63 63 70)"
-                  strokeWidth={1}
-                  size={32}
-                />
-                <Text className="font-semibold text-zinc-700 text-sm">
-                  Time to rest
-                </Text>
-              </Option.Label>
-              <Option.Value>
-                <Text className="font-light text-zinc-600 text-sm">
-                  {timeToRest}
-                </Text>
-                <ChevronRight
-                  opacity={0.9}
-                  color="rgb(63 63 70)"
-                  strokeWidth={1}
-                  size={32}
-                />
-              </Option.Value>
-            </Option.Root>
-          </Link>
+          <MotiView
+            from={animationProps.from}
+            animate={animationProps.animate}
+            transition={{ duration: 500, type: "timing", delay: 1100 }}
+          >
+            <Link href="/(options)/time-to-rest" asChild>
+              <Option.Root>
+                <Option.Label>
+                  <TimerReset
+                    opacity={0.9}
+                    color="rgb(63 63 70)"
+                    strokeWidth={1}
+                    size={32}
+                  />
+                  <Text className="font-semibold text-zinc-700 text-sm">
+                    Time to rest
+                  </Text>
+                </Option.Label>
+                <Option.Value>
+                  <Text className="font-light text-zinc-600 text-sm">
+                    {timeToRest}
+                  </Text>
+                  <AnimatedArrowIcon variant="dark" />
+                </Option.Value>
+              </Option.Root>
+            </Link>
+          </MotiView>
         </View>
       </BodyTheme>
 
@@ -118,7 +132,7 @@ export default function Prepare() {
         <Link href="/count-down" asChild>
           <Button.Root>
             <Button.Title text="Start" />
-            <ArrowRightIcon color="white" className="w-4 h-4" />
+            <AnimatedArrowIcon />
           </Button.Root>
         </Link>
       </FooterTheme>
