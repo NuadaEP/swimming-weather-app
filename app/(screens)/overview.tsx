@@ -23,10 +23,24 @@ import FooterTheme from "../../components/FooterTheme";
 import * as Button from "../../components/Button";
 import * as Option from "../../components/Option";
 
+import { useActivity } from "../../contexts/Activity";
 import { useSettings } from "../../contexts/Settings";
+import { millisecondsToSeconds } from "../../helpers/milliseconds-to-seconds";
 
 export default function Overview() {
-  const {} = useSettings();
+  const {
+    averageRestTime,
+    averageSpeed,
+    averageWorkTime,
+    bestWorkTime,
+    calories,
+    distance,
+    duration,
+    hardestWorkTime,
+    longerBreakTime,
+  } = useActivity();
+
+  const { poolSize } = useSettings();
 
   return (
     <BaseTheme>
@@ -36,15 +50,17 @@ export default function Overview() {
         </View>
         <View className="flex-row justify-between px-8 pb-4">
           <View className="items-center">
-            <Text className="font-semibold text-sm">1400 meters</Text>
+            <Text className="font-semibold text-sm">{distance}</Text>
             <Text className="font-light text-xs">DISTANCE</Text>
           </View>
           <View className="items-center">
-            <Text className="font-semibold text-sm">00:00.00</Text>
+            <Text className="font-semibold text-sm">
+              {millisecondsToSeconds(duration, true)}
+            </Text>
             <Text className="font-light text-xs">DURATION</Text>
           </View>
           <View className="items-center">
-            <Text className="font-semibold text-sm">00</Text>
+            <Text className="font-semibold text-sm">{calories}</Text>
             <Text className="font-light text-xs">Calories</Text>
           </View>
         </View>
@@ -61,7 +77,7 @@ export default function Overview() {
             </Text>
           </Option.Label>
           <Option.Value>
-            <Text className="font-light text-zinc-600 text-sm">25 meters</Text>
+            <Text className="font-light text-zinc-600 text-sm">{poolSize}</Text>
             <Check
               opacity={0.9}
               color="rgb(63 63 70)"
@@ -83,7 +99,9 @@ export default function Overview() {
             </Text>
           </Option.Label>
           <Option.Value>
-            <Text className="font-light text-zinc-600 text-sm">40 seconds</Text>
+            <Text className="font-light text-zinc-600 text-sm">
+              {millisecondsToSeconds(averageWorkTime)} seconds
+            </Text>
             <Check
               opacity={0.9}
               color="rgb(63 63 70)"
@@ -105,7 +123,9 @@ export default function Overview() {
             </Text>
           </Option.Label>
           <Option.Value>
-            <Text className="font-light text-zinc-600 text-sm">20 seconds</Text>
+            <Text className="font-light text-zinc-600 text-sm">
+              {millisecondsToSeconds(averageRestTime)} seconds
+            </Text>
             <Check
               opacity={0.9}
               color="rgb(63 63 70)"
@@ -127,7 +147,9 @@ export default function Overview() {
             </Text>
           </Option.Label>
           <Option.Value>
-            <Text className="font-light text-zinc-600 text-sm">48 seconds</Text>
+            <Text className="font-light text-zinc-600 text-sm">
+              {millisecondsToSeconds(bestWorkTime)} seconds
+            </Text>
             <Check
               opacity={0.9}
               color="rgb(63 63 70)"
@@ -149,7 +171,9 @@ export default function Overview() {
             </Text>
           </Option.Label>
           <Option.Value>
-            <Text className="font-light text-zinc-600 text-sm">55 seconds</Text>
+            <Text className="font-light text-zinc-600 text-sm">
+              {millisecondsToSeconds(hardestWorkTime)} seconds
+            </Text>
             <Check
               opacity={0.9}
               color="rgb(63 63 70)"
@@ -171,7 +195,9 @@ export default function Overview() {
             </Text>
           </Option.Label>
           <Option.Value>
-            <Text className="font-light text-zinc-600 text-sm">25 seconds</Text>
+            <Text className="font-light text-zinc-600 text-sm">
+              {millisecondsToSeconds(longerBreakTime)} seconds
+            </Text>
             <Check
               opacity={0.9}
               color="rgb(63 63 70)"
@@ -193,7 +219,9 @@ export default function Overview() {
             </Text>
           </Option.Label>
           <Option.Value>
-            <Text className="font-light text-zinc-600 text-sm">1km/h</Text>
+            <Text className="font-light text-zinc-600 text-sm">
+              {averageSpeed.toFixed(2)} meters/h
+            </Text>
             <Check
               opacity={0.9}
               color="rgb(63 63 70)"

@@ -24,12 +24,9 @@ import FooterTheme from "../../components/FooterTheme";
 import * as Button from "../../components/Button";
 
 import { millisecondsToSeconds } from "../../helpers/milliseconds-to-seconds";
-import { useSettings } from "../../contexts/Settings";
 
-type StopwatchMapper = {
-  activity: "Rest Time!" | "Work Time!";
-  time: string;
-};
+import { useSettings } from "../../contexts/Settings";
+import { StopwatchMapper, useActivity } from "../../contexts/Activity";
 
 export default function Stopwatch() {
   const [stopwatch, setStopwatch] = useState<StopwatchMapper[]>([]);
@@ -42,18 +39,18 @@ export default function Stopwatch() {
   const stopwatchTimerRef = useRef<StopwatchTimerMethods>(null);
 
   const { timeToWork, timeToRest } = useSettings();
+  const { handleActivity } = useActivity();
 
   const isWorkTime = useMemo(() => activity === "work", [activity]);
   const isPaused = useMemo(() => stopRun === "paused", [stopRun]);
 
   const workTime = useCallback(() => {
-    const snapshot = millisecondsToSeconds(
-      stopwatchTimerRef.current?.getSnapshot() as number
-    );
+    const milliseconds = stopwatchTimerRef.current?.getSnapshot() as number;
+    const time = millisecondsToSeconds(milliseconds);
 
     setStopwatch((current) => [
       ...current,
-      { activity: `Work Time!`, time: snapshot },
+      { activity: `Work Time!`, time, milliseconds },
     ]);
 
     setActivity("work");
@@ -65,13 +62,12 @@ export default function Stopwatch() {
   }, [activity, stopwatch, stopRun, almostTimeout]);
 
   const restTime = useCallback(() => {
-    const snapshot = millisecondsToSeconds(
-      stopwatchTimerRef.current?.getSnapshot() as number
-    );
+    const milliseconds = stopwatchTimerRef.current?.getSnapshot() as number;
+    const time = millisecondsToSeconds(milliseconds);
 
     setStopwatch((current) => [
       ...current,
-      { activity: `Rest Time!`, time: snapshot },
+      { activity: `Rest Time!`, time, milliseconds },
     ]);
 
     setActivity("rest");
@@ -258,6 +254,7 @@ export default function Stopwatch() {
                 stopwatchTimerRef.current?.pause();
                 stopwatchTimerRef.current?.reset();
                 intervalId && clearInterval(intervalId);
+                handleActivity(stopwatch);
               }}
               outlined
             >

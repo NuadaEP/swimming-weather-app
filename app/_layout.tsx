@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
+import { SplashScreen, Stack } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
+
 import { Settings } from "../contexts/Settings";
+import { Activity } from "../contexts/Activity";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -34,42 +36,44 @@ export default function RootLayout() {
 function RootLayoutNav() {
   return (
     <Settings>
-      <Stack
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: "#F7F5F2",
-          },
-          headerTintColor: "#5C5C5C",
-        }}
-      >
-        <Stack.Screen name="(screens)/index" options={{ title: "History" }} />
+      <Activity>
+        <Stack
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: "#F7F5F2",
+            },
+            headerTintColor: "#5C5C5C",
+          }}
+        >
+          <Stack.Screen name="(screens)/index" options={{ title: "History" }} />
 
-        <Stack.Screen
-          name="(screens)/prepare"
-          options={{ title: "Prepare to Swim" }}
-        />
-        <Stack.Screen
-          name="(screens)/count-down"
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="(screens)/stopwatch"
-          options={{ title: "Stopwatch", headerBackVisible: false }}
-        />
-        <Stack.Screen
-          name="(screens)/overview"
-          options={{ title: "Overview", headerBackVisible: false }}
-        />
-        <Stack.Screen name="[...missing]" options={{ title: "Oops!" }} />
-        <Stack.Screen
-          name="(options)"
-          options={{ title: "", headerShown: false, presentation: "modal" }}
-        />
-        <Stack.Screen
-          name="(modals)"
-          options={{ title: "", presentation: "modal", headerShown: false }}
-        />
-      </Stack>
+          <Stack.Screen
+            name="(screens)/prepare"
+            options={{ title: "Prepare to Swim" }}
+          />
+          <Stack.Screen
+            name="(screens)/count-down"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(screens)/stopwatch"
+            options={{ title: "Stopwatch", headerBackVisible: false }}
+          />
+          <Stack.Screen
+            name="(screens)/overview"
+            options={{ title: "Overview", headerBackVisible: false }}
+          />
+          <Stack.Screen name="[...missing]" options={{ title: "Oops!" }} />
+          <Stack.Screen
+            name="(options)"
+            options={{ title: "", headerShown: false, presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="(modals)"
+            options={{ title: "", presentation: "modal", headerShown: false }}
+          />
+        </Stack>
+      </Activity>
     </Settings>
   );
 }
