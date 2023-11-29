@@ -27,7 +27,7 @@ export default function CountDown() {
       color: "rgb(63,63,70)",
     },
     final: {
-      color: "rgb(153,27,27)",
+      color: "rgb(248,113,113)",
     },
   });
 

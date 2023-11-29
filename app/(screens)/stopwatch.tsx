@@ -8,11 +8,19 @@ import React, {
 import { FlatList, Pressable, Text, View } from "react-native";
 import { Link, Stack } from "expo-router";
 
-import { Pause, Play, Settings, CheckCheck } from "lucide-react-native";
+import {
+  Pause,
+  Play,
+  Settings,
+  CheckCheck,
+  HeartPulse,
+  Dumbbell,
+} from "lucide-react-native";
 import AnimatedLottieView from "lottie-react-native";
 import StopwatchTimer, {
   StopwatchTimerMethods,
 } from "react-native-animated-stopwatch-timer";
+import { View as MView, MotiView, useDynamicAnimation } from "moti";
 
 import SwimTime from "../../assets/animations/swim-time.json";
 import RestTime from "../../assets/animations/rest-time.json";
@@ -143,6 +151,13 @@ export default function Stopwatch() {
     startWatch();
   }, []);
 
+  const animatedView = useDynamicAnimation(() => ({ scale: 1 }));
+
+  useEffect(() => {
+    if (almostTimeout) animatedView.animateTo({ scale: 1.1 });
+    else animatedView.animateTo({ scale: 1 });
+  }, [almostTimeout]);
+
   return (
     <BaseTheme>
       <BodyTheme>
@@ -189,7 +204,10 @@ export default function Stopwatch() {
         />
 
         <View className="min-w-full h-64 items-center py-8 px-6">
-          <View className="flex-1 justify-center items-center my-3">
+          <MView
+            state={animatedView}
+            className="flex-1 justify-center items-center my-3"
+          >
             <StopwatchTimer
               ref={stopwatchTimerRef}
               leadingZeros={2}
@@ -202,7 +220,7 @@ export default function Stopwatch() {
               }}
               textCharStyle={{
                 fontWeight: "bold",
-                color: almostTimeout ? "rgb(248 113 113)" : "#27272a",
+                color: almostTimeout ? "rgb(248,113,113)" : "#27272a",
               }}
               digitStyle={{
                 minWidth: "9%",
@@ -216,27 +234,36 @@ export default function Stopwatch() {
             <Text className="text-sm font-light text-zinc-600">
               {isWorkTime ? "Swim time!" : "Rest time!"}
             </Text>
-          </View>
+          </MView>
           <FlatList
             horizontal
-            initialScrollIndex={
-              stopwatch.length === 0 ? stopwatch.length : stopwatch.length - 1
-            }
+            snapToEnd={false}
+            // initialScrollIndex={stopwatch.length ?? 0}
             onScrollToIndexFailed={() => false}
             data={stopwatch}
             keyExtractor={(_, index) => String(index)}
             renderItem={({ item }) => (
-              <View className="items-center justify-center border-l border-zinc-300 px-4">
+              <MotiView
+                from={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  type: "timing",
+                  delay: 100,
+                  duration: 300,
+                }}
+                className="items-center justify-center px-6"
+              >
                 <Text className="text-sm font-bold text-zinc-800 antialiased">
                   {item.time}
                 </Text>
                 <Text className="text-xs font-light text-zinc-600">
                   {item.activity}
                 </Text>
-              </View>
+              </MotiView>
             )}
           />
         </View>
+
         <View className="w-screen h-96 my-6 bg-app-isabeline">
           <AnimatedLottieView
             source={isWorkTime ? SwimTime : RestTime}
@@ -246,6 +273,7 @@ export default function Stopwatch() {
           />
         </View>
       </BodyTheme>
+
       <FooterTheme>
         {isPaused ? (
           <Link href="/overview" asChild>
@@ -275,8 +303,34 @@ export default function Stopwatch() {
             }}
           >
             <Button.Title
-              text={isWorkTime ? "Slide to Rest" : "Slide to Swim"}
+              text={isWorkTime ? "Press to Rest" : "Press to Swim"}
             />
+            <MotiView
+              from={{ scale: 1 }}
+              animate={{ scale: 1.2 }}
+              transition={{
+                loop: true,
+                type: "timing",
+                duration: 500,
+                delay: 100,
+              }}
+            >
+              {isWorkTime ? (
+                <HeartPulse
+                  opacity={0.9}
+                  color="white"
+                  strokeWidth={2}
+                  size={32}
+                />
+              ) : (
+                <Dumbbell
+                  opacity={0.9}
+                  color="white"
+                  strokeWidth={2}
+                  size={32}
+                />
+              )}
+            </MotiView>
           </Button.Root>
         )}
       </FooterTheme>

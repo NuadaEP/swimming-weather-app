@@ -1,4 +1,4 @@
-import React = require("react");
+import React from "react";
 
 import { MotiView } from "moti";
 import { ChevronRight } from "lucide-react-native";
