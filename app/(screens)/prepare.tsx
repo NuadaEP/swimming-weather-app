@@ -1,12 +1,6 @@
 import React from "react";
 import { Text, View } from "react-native";
-import {
-  ArrowRightIcon,
-  Ruler,
-  ChevronRight,
-  Dumbbell,
-  TimerReset,
-} from "lucide-react-native";
+import { Ruler, Dumbbell, TimerReset } from "lucide-react-native";
 import LottieView from "lottie-react-native";
 import { Link } from "expo-router";
 import { MotiView } from "moti";
@@ -45,7 +39,7 @@ export default function Prepare() {
           <MotiView
             from={animationProps.from}
             animate={animationProps.animate}
-            transition={{ duration: 500, type: "timing", delay: 500 }}
+            transition={{ duration: 500, type: "timing", delay: 100 }}
           >
             <Link href="/(options)/pool-size" asChild>
               <Option.Root>
@@ -73,7 +67,7 @@ export default function Prepare() {
           <MotiView
             from={animationProps.from}
             animate={animationProps.animate}
-            transition={{ duration: 500, type: "timing", delay: 700 }}
+            transition={{ duration: 500, type: "timing", delay: 300 }}
           >
             <Link href="/(options)/time-to-work" asChild>
               <Option.Root>
@@ -101,7 +95,7 @@ export default function Prepare() {
           <MotiView
             from={animationProps.from}
             animate={animationProps.animate}
-            transition={{ duration: 500, type: "timing", delay: 1100 }}
+            transition={{ duration: 500, type: "timing", delay: 500 }}
           >
             <Link href="/(options)/time-to-rest" asChild>
               <Option.Root>
