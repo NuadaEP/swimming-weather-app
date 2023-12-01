@@ -21,6 +21,7 @@ import StopwatchTimer, {
   StopwatchTimerMethods,
 } from "react-native-animated-stopwatch-timer";
 import { View as MView, MotiView, useDynamicAnimation } from "moti";
+import { Audio } from "expo-av";
 
 import SwimTime from "../../assets/animations/swim-time.json";
 import RestTime from "../../assets/animations/rest-time.json";
@@ -35,6 +36,10 @@ import { millisecondsToSeconds } from "../../helpers/milliseconds-to-seconds";
 
 import { useSettings } from "../../contexts/Settings";
 import { StopwatchMapper, useActivity } from "../../contexts/Activity";
+
+import StopwatchSound from "../../assets/sounds/stopwatch-sound.aiff";
+
+let beep: Audio.Sound | undefined;
 
 export default function Stopwatch() {
   const [stopwatch, setStopwatch] = useState<StopwatchMapper[]>([]);
@@ -53,6 +58,7 @@ export default function Stopwatch() {
   const isPaused = useMemo(() => stopRun === "paused", [stopRun]);
 
   const workTime = useCallback(() => {
+    createSound().then((sound) => sound.stopAsync());
     const milliseconds = stopwatchTimerRef.current?.getSnapshot() as number;
     const time = millisecondsToSeconds(milliseconds);
 
@@ -70,6 +76,8 @@ export default function Stopwatch() {
   }, [activity, stopwatch, stopRun, almostTimeout]);
 
   const restTime = useCallback(() => {
+    createSound().then((sound) => sound.stopAsync());
+
     const milliseconds = stopwatchTimerRef.current?.getSnapshot() as number;
     const time = millisecondsToSeconds(milliseconds);
 
@@ -101,6 +109,20 @@ export default function Stopwatch() {
       const [seconds] = millisecondsToSeconds(
         stopwatchTimerRef.current?.getSnapshot() as number
       ).split(",");
+
+      const [time] = timeToRest.split(" ");
+
+      let remaningTime = Number(time) - Number(seconds);
+
+      if (isWorkTime) {
+        const [time] = timeToWork.split(" ");
+
+        remaningTime = Number(time) - Number(seconds);
+      }
+
+      if (remaningTime <= 2) {
+        createSound().then((sound) => sound.playAsync());
+      }
 
       if (isWorkTime) {
         const workTimeNumber = Number(timeToWork.replace(" seconds", ""));
@@ -134,6 +156,7 @@ export default function Stopwatch() {
 
   const pause = useCallback(() => {
     stopwatchTimerRef.current?.pause();
+    createSound().then((sound) => sound.stopAsync());
 
     setStopRun("paused");
 
@@ -152,6 +175,16 @@ export default function Stopwatch() {
   }, []);
 
   const animatedView = useDynamicAnimation(() => ({ scale: 1 }));
+
+  const createSound = useCallback(async () => {
+    if (beep) return beep;
+
+    const { sound } = await Audio.Sound.createAsync(StopwatchSound);
+
+    beep = sound;
+
+    return beep;
+  }, []);
 
   useEffect(() => {
     if (almostTimeout) animatedView.animateTo({ scale: 1.1 });
