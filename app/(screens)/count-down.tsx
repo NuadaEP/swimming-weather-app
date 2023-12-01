@@ -8,6 +8,7 @@ import {
   useDynamicAnimation,
   useAnimationState,
 } from "moti";
+import { Audio } from "expo-av";
 
 import BaseTheme from "../../components/BaseTheme";
 import BodyTheme from "../../components/BodyTheme";
@@ -15,7 +16,10 @@ import FooterTheme from "../../components/FooterTheme";
 
 import * as Button from "../../components/Button";
 
+import CountdownSound from "../../assets/sounds/countdown-sound.wav";
+
 let refInterval: NodeJS.Timeout | null = null;
+let countdownBeep: Audio.Sound | undefined;
 
 export default function CountDown() {
   const [countdown, setCountdown] = useState(10);
@@ -31,13 +35,26 @@ export default function CountDown() {
     },
   });
 
+  const createSound = useCallback(async () => {
+    if (countdownBeep) return countdownBeep;
+
+    const { sound } = await Audio.Sound.createAsync(CountdownSound);
+
+    countdownBeep = sound;
+
+    return countdownBeep;
+  }, []);
+
   useEffect(() => {
     if (countdown <= 5) {
+      createSound().then((sound) => sound.playAsync());
+
       animationView.animateTo({ scale: 1.2 });
       animationText.transitionTo("final");
     }
 
     if (countdown === 0) {
+      setTimeout(() => createSound().then((sound) => sound.stopAsync()), 500);
       setTimeout(() => {
         router.push("/(screens)/stopwatch");
       }, 1000);
@@ -66,6 +83,7 @@ export default function CountDown() {
 
   const addTime = useCallback(() => {
     if (countdown < 60) {
+      createSound().then((sound) => sound.stopAsync());
       animationView.animateTo({ scale: 1 });
       animationText.transitionTo("from");
       setCountdown((current) => current + 10);
