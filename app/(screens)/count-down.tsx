@@ -9,6 +9,7 @@ import {
   useAnimationState,
 } from "moti";
 import { Audio } from "expo-av";
+import * as Haptics from "expo-haptics";
 
 import BaseTheme from "../../components/BaseTheme";
 import BodyTheme from "../../components/BodyTheme";
@@ -51,6 +52,8 @@ export default function CountDown() {
 
       animationView.animateTo({ scale: 1.2 });
       animationText.transitionTo("final");
+
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
     }
 
     if (countdown === 0) {
@@ -87,6 +90,7 @@ export default function CountDown() {
       animationView.animateTo({ scale: 1 });
       animationText.transitionTo("from");
       setCountdown((current) => current + 10);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     }
   }, [countdown]);
 

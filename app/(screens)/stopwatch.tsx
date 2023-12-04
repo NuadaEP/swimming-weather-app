@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { Link, Stack } from "expo-router";
+import * as Haptics from "expo-haptics";
 
 import {
   Pause,
@@ -101,6 +102,8 @@ export default function Stopwatch() {
   }, []);
 
   const play = useCallback(() => {
+    actionVibrate();
+
     setTimeout(() => stopwatchTimerRef.current?.play(), 500);
   }, []);
 
@@ -121,6 +124,7 @@ export default function Stopwatch() {
       }
 
       if (remaningTime <= 2) {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
         createSound().then((sound) => sound.playAsync());
       }
 
@@ -154,11 +158,16 @@ export default function Stopwatch() {
     startWatch();
   }, [stopwatchTimerRef]);
 
+  const actionVibrate = useCallback(() => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+  }, []);
+
   const pause = useCallback(() => {
     stopwatchTimerRef.current?.pause();
     createSound().then((sound) => sound.stopAsync());
 
     setStopRun("paused");
+    actionVibrate();
 
     if (intervalId) {
       clearInterval(intervalId);
@@ -169,6 +178,7 @@ export default function Stopwatch() {
   const resume = useCallback(() => {
     play();
 
+    actionVibrate();
     setStopRun("resume");
 
     startWatch();
@@ -308,7 +318,7 @@ export default function Stopwatch() {
       </BodyTheme>
 
       <FooterTheme>
-        {isPaused ? (
+        {isPaused && stopwatch.length >= 2 ? (
           <Link href="/overview" asChild>
             <Button.Root
               onPress={() => {
@@ -316,6 +326,7 @@ export default function Stopwatch() {
                 stopwatchTimerRef.current?.reset();
                 intervalId && clearInterval(intervalId);
                 handleActivity(stopwatch);
+                actionVibrate();
               }}
               outlined
             >
