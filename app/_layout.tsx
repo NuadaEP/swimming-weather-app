@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
+import { BackHandler } from "react-native";
 import { SplashScreen, Stack } from "expo-router";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import { Settings } from "../contexts/Settings";
 import { Activity } from "../contexts/Activity";
-import { BackHandler } from "react-native";
-
-export { ErrorBoundary } from "expo-router";
 
 SplashScreen.preventAutoHideAsync();
 
