@@ -5,6 +5,7 @@ import { useFonts } from "expo-font";
 
 import { Settings } from "../contexts/Settings";
 import { Activity } from "../contexts/Activity";
+import { BackHandler } from "react-native";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -26,6 +27,15 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
+  useEffect(() => {
+    const backHendler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => true
+    );
+
+    return () => backHendler.remove();
+  }, []);
+
   if (!loaded) {
     return null;
   }
@@ -43,6 +53,7 @@ function RootLayoutNav() {
               backgroundColor: "#F7F5F2",
             },
             headerTintColor: "#5C5C5C",
+            gestureEnabled: false,
           }}
         >
           <Stack.Screen name="(screens)/index" options={{ title: "History" }} />
