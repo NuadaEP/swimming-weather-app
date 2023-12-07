@@ -10,6 +10,7 @@ import {
 } from "moti";
 import { Audio } from "expo-av";
 import * as Haptics from "expo-haptics";
+import { useKeepAwake } from "expo-keep-awake";
 
 import BaseTheme from "../../components/BaseTheme";
 import BodyTheme from "../../components/BodyTheme";
@@ -93,6 +94,8 @@ export default function CountDown() {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     }
   }, [countdown]);
+
+  useKeepAwake();
 
   return (
     <BaseTheme>

@@ -8,6 +8,7 @@ import React, {
 import { FlatList, Pressable, Text, View } from "react-native";
 import { Link, Stack } from "expo-router";
 import * as Haptics from "expo-haptics";
+import { useKeepAwake } from "expo-keep-awake";
 
 import {
   Pause,
@@ -200,6 +201,8 @@ export default function Stopwatch() {
     if (almostTimeout) animatedView.animateTo({ scale: 1.1 });
     else animatedView.animateTo({ scale: 1 });
   }, [almostTimeout]);
+
+  useKeepAwake();
 
   return (
     <BaseTheme>
