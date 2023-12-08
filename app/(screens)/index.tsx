@@ -9,6 +9,7 @@ import FooterTheme from "../../components/FooterTheme";
 
 import * as Button from "../../components/Button";
 import AnimatedArrowIcon from "../../components/AnimatedArrowIcon";
+import { makeActivityTable, Activity } from "../../services";
 
 const data = [
   {
@@ -92,32 +93,9 @@ const data = [
 
 export default function ListActivities() {
   const [activities, setActivities] = useState<any[]>([]);
-  const db = SQLite.openDatabase("swimming-weather.sb");
 
   useEffect(() => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS activities (id INTEGER PRIMARY KEY NOT NULL, distance TEXT, duration TEXT, calories TEXT, pool_size TEXT, av_time_working TEXT, av_resting_time TEXT, best_time TEXT, hardest_time TEXT, longer_break_time TEXT, av_speed TEXT, created_at DATE);",
-        [],
-        () => console.log("Connected"),
-        (error) => {
-          console.error(`ERROR: [${error}]`);
-          return true;
-        }
-      );
-    });
-
-    db.transaction((tx) => {
-      tx.executeSql(
-        "SELECT distance, duration, av_speed, created_at FROM activities ORDER BY id DESC",
-        undefined,
-        (txObj, resultSet) => setActivities(resultSet.rows._array),
-        (error) => {
-          console.error(`QUERY ERROR: ${error}`);
-          return false;
-        }
-      );
-    });
+    makeActivityTable().selectAll<Activity>().then(setActivities);
   }, []);
 
   console.log(activities);

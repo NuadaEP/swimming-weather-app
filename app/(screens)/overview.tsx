@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
 import {
@@ -29,6 +29,7 @@ import { useSettings } from "../../contexts/Settings";
 
 import { millisecondsToSeconds } from "../../helpers/milliseconds-to-seconds";
 import AnimatedArrowIcon from "../../components/AnimatedArrowIcon";
+import { Activity, makeActivityTable } from "../../services";
 
 const animationProps = {
   from: {
@@ -54,6 +55,22 @@ export default function Overview() {
   } = useActivity();
 
   const { poolSize } = useSettings();
+
+  useEffect(() => {
+    makeActivityTable().insert<Omit<Activity, "id">>({
+      av_resting_time: String(averageRestTime),
+      av_speed: String(averageSpeed),
+      av_time_working: String(averageWorkTime),
+      best_time: String(bestWorkTime),
+      calories: String(calories),
+      distance: String(distance),
+      duration: String(duration),
+      hardest_time: String(hardestWorkTime),
+      longer_break_time: String(longerBreakTime),
+      pool_size: poolSize,
+      created_at: new Date(),
+    });
+  }, []);
 
   return (
     <BaseTheme>
