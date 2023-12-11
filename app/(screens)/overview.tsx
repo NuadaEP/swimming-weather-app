@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
 import {
-  ArrowRightIcon,
   Check,
   Clock,
   Dumbbell,
@@ -29,7 +28,7 @@ import { useSettings } from "../../contexts/Settings";
 
 import { millisecondsToSeconds } from "../../helpers/milliseconds-to-seconds";
 import AnimatedArrowIcon from "../../components/AnimatedArrowIcon";
-import { Activity, makeActivityTable } from "../../services";
+import { makeActivityTable } from "../../services";
 
 const animationProps = {
   from: {
@@ -57,7 +56,7 @@ export default function Overview() {
   const { poolSize } = useSettings();
 
   useEffect(() => {
-    makeActivityTable().insert<Omit<Activity, "id">>({
+    makeActivityTable().insert({
       av_resting_time: String(averageRestTime),
       av_speed: String(averageSpeed),
       av_time_working: String(averageWorkTime),

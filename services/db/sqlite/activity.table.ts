@@ -2,10 +2,11 @@ import * as SQLite from "expo-sqlite";
 
 import { SQLiteConnect } from "./sqlite-connect";
 import { Database } from "../db.interface";
+import { Activity } from "../models";
 
 export class ActivityTable
   extends SQLiteConnect
-  implements Database<SQLite.SQLiteDatabase>
+  implements Database<SQLite.SQLiteDatabase, Activity>
 {
   constructor() {
     super();
@@ -26,17 +27,23 @@ export class ActivityTable
     });
   }
 
-  public async insert<Paramenter>(data: Paramenter): Promise<boolean> {
-    let response = true;
+  public async insert(data: Omit<Activity, "id">): Promise<boolean> {
+    let response: boolean = true;
+
+    const fields = Object.keys(data);
+    const values = Object.values(data).map((v) => `"${v}"`);
+
     this.connection.transaction((tx) => {
       tx.executeSql(
-        `INSERT INTO activities (id, distance, duration, calories, pool_size, av_time_working, av_resting_time, best_time, hardest_time, longer_break_time, av_speed, created_at) values (${data.join(
+        `INSERT INTO activities (${fields.join(", ")}) values (${values.join(
           ", "
         )});`,
-        [],
-        () => {
+        undefined,
+        undefined,
+        (_, e) => {
+          console.log("INSERT ERROR", e.message);
           response = false;
-          return true;
+          return false;
         }
       );
     });
@@ -44,21 +51,23 @@ export class ActivityTable
     return response;
   }
 
-  public async selectAll<Response>(): Promise<Response[]> {
-    const registers: Response[] = [];
+  public async selectAll(): Promise<Activity[]> {
+    const registers: Activity[] = [];
 
     this.connection.transaction((tx) => {
       tx.executeSql(
-        "SELECT distance, duration, av_speed, created_at FROM activities ORDER BY id DESC",
+        "SELECT * FROM activities ORDER BY id DESC",
         undefined,
-        (_, resultSet) => registers.push(resultSet.rows._array as Response)
+        (_, resultSet) => {
+          registers.push(...resultSet.rows._array);
+        }
       );
     });
 
     return registers;
   }
 
-  public async selectOne<Response>(id: number): Promise<Response> {
+  public async selectOne(id: number): Promise<Activity> {
     let register;
 
     this.connection.transaction((tx) => {
@@ -66,11 +75,11 @@ export class ActivityTable
         `SELECT * FROM activities WHERE id = ${id}`,
         undefined,
         (_, resultSet) => {
-          register = resultSet.rows._array as Response;
+          register = resultSet.rows._array as unknown as Activity;
         }
       );
     });
 
-    return register as Response;
+    return register as unknown as Activity;
   }
 }

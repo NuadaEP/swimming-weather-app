@@ -92,38 +92,36 @@ const data = [
 ];
 
 export default function ListActivities() {
-  const [activities, setActivities] = useState<any[]>([]);
+  const [activities, setActivities] = useState<Activity[]>([]);
 
   useEffect(() => {
-    makeActivityTable().selectAll<Activity>().then(setActivities);
+    makeActivityTable().selectAll().then(setActivities);
   }, []);
-
   console.log(activities);
-
   return (
     <BaseTheme>
       <BodyTheme>
         <FlatList
-          data={data}
+          data={activities}
           ItemSeparatorComponent={() => <View className="mt-4" />}
           ListEmptyComponent={() => <Text>No register to show here</Text>}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => String(item.id)}
           renderItem={({ item }) => (
             <View className="flex-row justify-between items-center my-4 px-4">
               <View className="items-start">
                 <Text className="font-semibold text-sm text-zinc-800">
-                  {item.swam}
+                  {item.distance} meters
                 </Text>
                 <Text className="text-xs font-light text-zinc-500">
-                  {item.time}
+                  {item.duration}
                 </Text>
               </View>
               <View className="items-end">
                 <Text className="font-semibold text-sm text-zinc-800">
-                  {item.pace}
+                  {item.calories}
                 </Text>
                 <Text className="text-xs font-light text-zinc-500">
-                  {item.date}
+                  {String(item.created_at)}
                 </Text>
               </View>
             </View>
