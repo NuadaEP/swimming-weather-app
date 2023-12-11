@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FlatList, Text, View } from "react-native";
 import { Link } from "expo-router";
 import * as SQLite from "expo-sqlite";
@@ -10,6 +10,7 @@ import FooterTheme from "../../components/FooterTheme";
 import * as Button from "../../components/Button";
 import AnimatedArrowIcon from "../../components/AnimatedArrowIcon";
 import { makeActivityTable, Activity } from "../../services";
+import { millisecondsToSeconds } from "../../helpers/milliseconds-to-seconds";
 
 const data = [
   {
@@ -97,7 +98,13 @@ export default function ListActivities() {
   useEffect(() => {
     makeActivityTable().selectAll().then(setActivities);
   }, []);
-  console.log(activities);
+
+  const formatDate = useCallback((date: string) => {
+    const createdAt = new Date(date);
+
+    return `${createdAt.getDay()}/${createdAt.getMonth()}/${createdAt.getFullYear()}`;
+  }, []);
+
   return (
     <BaseTheme>
       <BodyTheme>
@@ -113,15 +120,15 @@ export default function ListActivities() {
                   {item.distance} meters
                 </Text>
                 <Text className="text-xs font-light text-zinc-500">
-                  {item.duration}
+                  {millisecondsToSeconds(Number(item.duration), true)} minutes
                 </Text>
               </View>
               <View className="items-end">
                 <Text className="font-semibold text-sm text-zinc-800">
-                  {item.calories}
+                  {Number(item.calories).toFixed(2)} Kcal
                 </Text>
                 <Text className="text-xs font-light text-zinc-500">
-                  {String(item.created_at)}
+                  {formatDate(String(item.created_at))}
                 </Text>
               </View>
             </View>
