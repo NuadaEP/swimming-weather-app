@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FlatList, Text, View } from "react-native";
 import { Link } from "expo-router";
-import * as SQLite from "expo-sqlite";
 
 import BaseTheme from "../../components/BaseTheme";
 import BodyTheme from "../../components/BodyTheme";
@@ -11,86 +10,6 @@ import * as Button from "../../components/Button";
 import AnimatedArrowIcon from "../../components/AnimatedArrowIcon";
 import { makeActivityTable, Activity } from "../../services";
 import { millisecondsToSeconds } from "../../helpers/milliseconds-to-seconds";
-
-const data = [
-  {
-    id: "001",
-    swam: "1400m swam",
-    time: "in 45 minutes",
-    pace: "pace 50m/58s",
-    date: "at 17/10/2023",
-  },
-  {
-    id: "002",
-    swam: "1400m swam",
-    time: "in 45 minutes",
-    pace: "pace 50m/58s",
-    date: "at 17/10/2023",
-  },
-  {
-    id: "003",
-    swam: "1400m swam",
-    time: "in 45 minutes",
-    pace: "pace 50m/58s",
-    date: "at 17/10/2023",
-  },
-  {
-    id: "004",
-    swam: "1400m swam",
-    time: "in 45 minutes",
-    pace: "pace 50m/58s",
-    date: "at 17/10/2023",
-  },
-  {
-    id: "005",
-    swam: "1400m swam",
-    time: "in 45 minutes",
-    pace: "pace 50m/58s",
-    date: "at 17/10/2023",
-  },
-  {
-    id: "006",
-    swam: "1400m swam",
-    time: "in 45 minutes",
-    pace: "pace 50m/58s",
-    date: "at 17/10/2023",
-  },
-  {
-    id: "007",
-    swam: "1400m swam",
-    time: "in 45 minutes",
-    pace: "pace 50m/58s",
-    date: "at 17/10/2023",
-  },
-  {
-    id: "008",
-    swam: "1400m swam",
-    time: "in 45 minutes",
-    pace: "pace 50m/58s",
-    date: "at 17/10/2023",
-  },
-  {
-    id: "009",
-    swam: "1400m swam",
-    time: "in 45 minutes",
-    pace: "pace 50m/58s",
-    date: "at 17/10/2023",
-  },
-  {
-    id: "010",
-    swam: "1400m swam",
-    time: "in 45 minutes",
-    pace: "pace 50m/58s",
-    date: "at 17/10/2023",
-  },
-  {
-    id: "011",
-    swam: "1400m swam",
-    time: "in 45 minutes",
-    pace: "pace 50m/58s",
-    date: "at 17/10/2023",
-  },
-];
 
 export default function ListActivities() {
   const [activities, setActivities] = useState<Activity[]>([]);
