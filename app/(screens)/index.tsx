@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { FlatList, Text, View } from "react-native";
+import { FlatList, Pressable, Text, View } from "react-native";
 import { Link } from "expo-router";
 
 import BaseTheme from "../../components/BaseTheme";
@@ -8,7 +8,9 @@ import FooterTheme from "../../components/FooterTheme";
 
 import * as Button from "../../components/Button";
 import AnimatedArrowIcon from "../../components/AnimatedArrowIcon";
+
 import { makeActivityTable, Activity } from "../../services";
+
 import { millisecondsToSeconds } from "../../helpers/milliseconds-to-seconds";
 
 export default function ListActivities() {
@@ -33,24 +35,32 @@ export default function ListActivities() {
           ListEmptyComponent={() => <Text>No register to show here</Text>}
           keyExtractor={(item) => String(item.id)}
           renderItem={({ item }) => (
-            <View className="flex-row justify-between items-center my-4 px-4">
-              <View className="items-start">
-                <Text className="font-semibold text-sm text-zinc-800">
-                  {item.distance} meters
-                </Text>
-                <Text className="text-xs font-light text-zinc-500">
-                  {millisecondsToSeconds(Number(item.duration), true)} minutes
-                </Text>
-              </View>
-              <View className="items-end">
-                <Text className="font-semibold text-sm text-zinc-800">
-                  {Number(item.calories).toFixed(2)} Kcal
-                </Text>
-                <Text className="text-xs font-light text-zinc-500">
-                  {formatDate(String(item.created_at))}
-                </Text>
-              </View>
-            </View>
+            <Link
+              href={{
+                pathname: "/details",
+                params: { id: item.id },
+              }}
+              asChild
+            >
+              <Pressable className="flex-row justify-between items-center my-4 px-5">
+                <View className="items-start gap-2">
+                  <Text className="font-semibold text-sm text-zinc-800">
+                    {item.distance} meters
+                  </Text>
+                  <Text className="text-xs font-light text-zinc-500">
+                    {millisecondsToSeconds(Number(item.duration), true)} minutes
+                  </Text>
+                </View>
+                <View className="items-end gap-2">
+                  <Text className="font-semibold text-sm text-zinc-800">
+                    {Number(item.calories).toFixed(2)} Kcal
+                  </Text>
+                  <Text className="text-xs font-light text-zinc-500">
+                    {formatDate(String(item.created_at))}
+                  </Text>
+                </View>
+              </Pressable>
+            </Link>
           )}
         />
       </BodyTheme>

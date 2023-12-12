@@ -20,8 +20,8 @@ const SettingContext = createContext({} as SettingsContextType);
 
 export function Settings(props: ComponentProps<typeof Fragment>) {
   const [poolSize, setPoolSize] = useState("25 meters");
-  const [timeToWork, setTimeToWork] = useState("5 seconds");
-  const [timeToRest, setTimeToRest] = useState("5 seconds");
+  const [timeToWork, setTimeToWork] = useState("30 seconds");
+  const [timeToRest, setTimeToRest] = useState("20 seconds");
 
   const onSelect = useCallback((label: SettingLabels, value: string) => {
     switch (label) {

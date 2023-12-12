@@ -72,6 +72,10 @@ function RootLayoutNav() {
             name="(screens)/overview"
             options={{ title: "Overview", headerBackVisible: false }}
           />
+          <Stack.Screen
+            name="(screens)/details"
+            options={{ title: "Details", headerBackVisible: true }}
+          />
           <Stack.Screen name="[...missing]" options={{ title: "Oops!" }} />
           <Stack.Screen
             name="(options)"

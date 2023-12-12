@@ -63,19 +63,19 @@ export class ActivityTable
     return registers;
   }
 
-  public async selectOne(id: number): Promise<Activity> {
-    let register;
+  public async selectOne(id: number): Promise<Activity | undefined> {
+    let register: Activity | undefined;
 
     this.connection.transaction((tx) => {
       tx.executeSql(
-        `SELECT * FROM activities WHERE id = ${id}`,
+        `SELECT * FROM activities WHERE id = '${id}'`,
         undefined,
         (_, resultSet) => {
-          register = resultSet.rows._array as unknown as Activity;
+          register = resultSet.rows._array[0];
         }
       );
     });
 
-    return register as unknown as Activity;
+    return register;
   }
 }
