@@ -18,11 +18,8 @@ export class ActivityTable
       tx.executeSql(
         "CREATE TABLE IF NOT EXISTS activities (id INTEGER PRIMARY KEY NOT NULL, distance TEXT, duration TEXT, calories TEXT, pool_size TEXT, av_time_working TEXT, av_resting_time TEXT, best_time TEXT, hardest_time TEXT, longer_break_time TEXT, av_speed TEXT, created_at DATE);",
         [],
-        () => console.log("Connected"),
-        (error) => {
-          console.error(`ERROR: [${error}]`);
-          return true;
-        }
+        undefined,
+        undefined
       );
     });
   }
@@ -40,8 +37,7 @@ export class ActivityTable
         )});`,
         undefined,
         undefined,
-        (_, e) => {
-          console.log("INSERT ERROR", e.message);
+        () => {
           response = false;
           return false;
         }
